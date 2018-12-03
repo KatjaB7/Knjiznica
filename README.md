@@ -1,4 +1,4 @@
-# Baza knjižnia
+# Baza knjižnica
 
 Avtorja:
 * Katja Bela
@@ -12,4 +12,4 @@ Baza bo hranila podatke o knjigah v knjižnici. Njihovem letu izdaje, založbi, 
 
 ## ER diagram
 
-![ER diagram](knjiznica.png)
+![ER diagram](knjiznica.PNG)
