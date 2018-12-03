@@ -1,15 +1,15 @@
-# Baza najboljših filmov
+# Baza knjižnia
 
 Avtorja:
-* Janoš Vidali
-* Matija Pretnar
+* Katja Bela
+* Zala Kitel
 
-Vzorčna seminarska naloga pri predmetu *Podatkovne baze 1*
+Seminarska naloga pri predmetu *Podatkovne baze 1*
 
 ## Opis
 
-V bazo bomo zbrali najboljše filme, igralce in režiserje.
+Baza bo hranila podatke o knjigah v knjižnici. Njihovem letu izdaje, založbi, avtorju.
 
 ## ER diagram
 
-![ER diagram](filmi.png)
+![ER diagram](knjiznica.png)
