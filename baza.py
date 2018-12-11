@@ -48,9 +48,9 @@ def ustvari_tabele(conn):
     conn.execute("""
         CREATE TABLE izposoja (
             id              INTEGER PRIMARY KEY AUTOINCREMENT,
-            datum_izposoje  STRING,
-            datum_vracila   STRING,
-            rok_vracila     STRING,
+            datum_izposoje  DATE,
+            datum_vracila   DATE,
+            rok_vracila     DATE,
             strosek         INTEGER,
             clan            INTEGER REFERENCES clan(id),
             knjiga          INTEGER REFERENCES knjiga(id),
