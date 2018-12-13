@@ -1,0 +1,95 @@
+knjiga;;;;
+id;naslov;opis;id_avtorja;id_zalozbe
+1;Loèil bom peno od valov;Roman, zgrajen iz 3 novel, dogajanje med prvo svetovno vojno, ljubezenska zgodba med Elico in Ivanom. ;1;6
+2;Na Klancu ;Roman, kjer se Francka spomija žalostnih dogodkov iz otroštva, njena življenska zgodba in spomin na tek za vozom.;2;3
+3;Hlapec Jernej in njegova pravica;Povest, hlapca Jerneja, delavca na domaèiji, kjer ga naženjo, ta se odpravi iskat pravico.;2;10
+4;Veliki briljantni valèek;Drama, zgrajena iz 3 dejanj, Glavna oseba Simon, življenje mu gre samo navzdol, na koncu ples kjer novinec predstavi za Chopina,odigra najboljšo izvedb Briljantnega valèka.;3;1
+5;To noè sem jo videl ;Roman, pripovedovanje spomine dogodkov povezanih z glavno junakinjo Veroniko,njeno življenje skozi predvojni in povojni èas na Slovenskih tleh.;3;7
+6;Sapramiška;Pravljica, o miški z imenom Sapra, o njenih dogodivšèinah s tremi lešniki.;4;1
+7;Kresna noè ;Pesniška zbirka, sestavljena iz 13 tridelnih pesmi, tematika iz narave,kmeèko okolje in obmorski svet.;4;1
+8;Lukec in njegov škorec;Povest, o glavnem junaku Lukecu, ki gre od doma in se potem spet vrne na poti ga vedno spremlja njegov škorec;5;1
+9;Peter Klepec ;Povest, kjer je Peter Klepec glavni junak , domaèin nenavadne moèi, ki je iz zgornjekoplske doline pregnal Turke.;5;1
+10;Mali upornik ;Roman, kjer 12- letni fantiè pripoveduje, zgodbo iz bojišèa , medsebojne odnose ter vpliv vojne nanje.;5;1
+11;Kdo je napravil Vidku srajèico;Pravljica, glavnijunak Vid, ki je prijatelj z Pajkom in ptièkom, ki mu sešijeta srajèico. ;6;1
+12;Martin Krpan z vrha ;Pripovedka, o glavnem junaku Martinu Krpanu, ki tihotapi sol, skozi pripoved naredi dobra dejanja, zaradi èesar sme uvaati sol.;6;1
+13;Popotovanje iz Litije do Èateža; Kratka proza,potopisni spis, opisuje potovanje med Litijo in Èatežem.;6;1
+14;Stotisoènoga in druge igre;Drama,  kjer so zbrane njegove igre.;7;1
+15;Debeluška;Roman, glavna junakinja romana je Urša, ki se sreèuje z motnjami prehranjevanja. ;8;1
+16;Princeska z napako ;Roman, kjer je glavna junakinja Fatima, begunka, opisuje njeno življenje v šoli, družino in njene stiske.;8;2
+17;Èudežni vitez ;Pripoved, kjer osnovnšolec Bor obišèe Ljubljanski grad, kjer sreèa viteza, od takrat pripoved Borvega življenja in viteza.;8;11
+18;Stvor;Roman, najstniška grozljivka, kjer prijateljice raziskujejo magiène sile.;8;11
+19;Fantje iz gline;Roman, ki obravnava problem drugaène spolne usmerjenosti, glavna junaka Ajk in Mali ki sta si popolnoma razlièna .;8;1
+20;Tantadruj ;Novela, iz ljudske pripovedi, ki jo je mati pripovedovala otroku, glavni junak norèek Tantadruj, ki želi umreti.  ;9;10
+21;Pomladni dan ;Roman, govori o pripovedovalcu, ki se po vojni vrne v svoj rojstni kraj in se tam spominja svojega otroštva in mladosti.;9;1
+22;Pedenjped;Pesniška zbirka, pesmi kjer je na humoren in zanimiv naèin predstavljen osrednji lik  Pedenjped. ;10;1
+23;Zmajèek razgrajaèek ;Pesem, ki opisuje vragolije malega zmaja ki jih poène skozi cel dan. ;10;1
+24;Majhnica ;Zbirka pravljic, razdeljena na 5 poglavij, vsaka nekaj drugaènega zato posebna.;10;1
+25;Èrni labirinti;Roman, o slovenskih izseljencih v Franciji, ;11;1
+26;Lastovka, èez ocean ;Roman, kjer se na poltovorno ladjo imenovano Lastovka, vkrca 12 potnikov, ki se vraèajo iz Amerike v domovino.;11;12
+27;Delovni dan sestre Marije;Roman, o glavnem liku medicinski sestri Marji obiskuje bolnike na domu, njena zgodba o možu Lenartu, pacientih in ljubezni.;11;13
+28;Gimnazijka ;Roman, o glavni junakinji Adi, zgodba o njeni srednješolski noseènosti, ki jo skriva pred starši, zato potuje.;11;1
+29;Zadnji mega žur;Prozno besedilo, o glavnem junaku Mateju, srednješolcu, ki zaide v težave in jih rešuje z drogami. ;12;2
+30;Kapitanov kljuè;Roman, ki govori o ladji Rex in njenem zakladu. V knjigi glavna junaka Bruno in Tim odkrivata zaklad.;12;1
+31;Zelena kri ;Roman o nogometnem dvoboji med Olimpijo in Mariborom,  za pokal UEFA. O spletkah za igro.;12;1
+32;Poèitnice na Marsu ;Proza o dveh šolarjih Mihi in Rini, ki želita sestaviti vesoljsko ladjo, o pravi vesoljski ladji in vesoljcih.;12;1
+33;Bela pravljica ;Slovenka pesem,  navdihnjna izsrednjega veka, balada.;13;10
+34;Muca copatarica ;Pravljica, ki govori o zgodbi, ko otroci ne najdejo svojih copat, ki jih ni ker jih niso pospravili.;14;1
+35;Moj dežnik je lahko balon ;Pravljica, o deklici Jelki in rumenem dežniku  in njenem življenju;;1
+36;Hiša iz kock ;Pravljica, govori o deklici Jelka, ki stanuje v hiši iz kock, pripoveduje o raziskuvanju sob in življenju.;14;1
+37;Za lahko noè ;Zbirka ravljic, za lahko noè, obsega 42 razliènih pravljic. ;14;1
+38;Zaljubljeni vampir;Pripoved, glavna junaka Tina in Luka sta v gozdu Zlodejev Brošt, kjer straši, njuno dogajanja.;14;1
+39;Niki ;Psihološki roman, prvoosebna pripoved o toko misli pomešanimi z mladostnimi spomini.;15;1
+40;Ninina pesnika dva;Ljubezenski roman, ki govori o življeju gimnazijke in dvema fantoma.;15;1
+41;Maèek Muri ;Pravljica o èrnem maèku iz maèjega mesta. ;15;1
+42;Moj prijatelj Piki Jakob ;Pravljica o medvedu Piki Jakobu, ki obiskuje medvedjo šolo.;16;1
+43;Zmaj Direndaj ;Pravljica o zmaju in njegovih dogodivšèinah v mestu .;16;1
+44;Pajacek in punèka;Pravljica o punèki,ki je živela èisto sama in šivala pajacke. ;16;1
+45;Pod svobodnim soncem ;Roman, kjer je osrednja oseba Iztok, ki zaène bitko med Slovani in Bizantinci.;16;1
+46;Naša kri ;Drama, dogajanje v vasici v èasu vojne. ;17;14
+47;Ciciban ;Otroška pesniška zbirka, z razliènimi tematikami.;18;4
+48;Pisanice ;Mladinska pesniška zbirka za mlade o doživljanju otroštva.;18;15
+49;Mehurèki ;Otroška pesniška zbirka, z razliènimi tematikami.;18;1
+50;Butaljski policaj in Cefizelj;Pravljica, ki se dogaja na vasi Butalje,kjer živijo butaljci, njihove življenske prigode.;19;8
+51;Sonèna ura ;Zbirka pesmi, z zanimivimi tematikami.;19;8
+52;Peskovnik boga otroka ;Roman, kjer skozi zgodbo naletimo na  neprièakovane zasuke, s humoristiènimi vložki.;20;8
+53;Zbirka Anica ;Zbirka pravljic o Anicinem življenju.;20;1
+54;Lažniva Suzi ;Roman, ki govori o deklici Suzani, ki zaradi laži zabrede v težave.;20;1
+55;Blazno resno o šoli;Roman , ki govori o razliènih problemih, ki najstnike èakajo v šoli. ;20;1
+56;Panika ;Roman, kjer je glavna junakinja medicinska sestra Vera, ki razmišlja o življenju. ;20;1
+57;220 Stopinj poševno ;Zbirka kuhinjskih receptov ;21;5
+58;Angel Pozabe ;Roman, o grozljivih poskusih iztrebljenja koroških Slovencev v èasu nacizma med drugo svetovno vojno.;22;9
+59;Resnica ima tvoje oèi ;Roman , ki govri o èudni resnici, katere se je glavni juak noèe zavedati.;23;9
+60;Pesmi in romance ;Pesniška zbirka, razlèna tematika.;24;16
+61;Izbrane pesmi ;Pesniška zbirka, nekaterih njegovih pesmi zbral - Dušan Pirjavec. ;24;4
+62;Misel moja, pusti me;Poezija, o mislih.;25;16
+63;Basni in pravljice ;Zbirka pouènih živalskih in drugih zgodb.;25;4
+64;Leninov park ;Kriminalni roman o dveh umorih v Ljubljani kjer se pojavi vprašanje ali sta povezana.;26;17
+65;Pogodba;Kriminalni roman, zgodba o umorih, ki se dogajajo v Rimu, katere raziskujejo.;27;1
+66;Belo se pere na devetdeset;Roman, je pretresljiv, duhovit in navdihujoè roman, ki opisuje življenjsko zgodbo pripovedovalke, odrašèajoèe v sedemdesetih in osemdesetih letih.;28;18
+67;Jaz, ti, vsi od mene do tebe;Nanizanka, o predšolski otroci, ki se spoznavanjo loèevanje sebe od drugih, oblaèila, bližnje okolje, vode, gozdne živali in drevesa.;29;19
+68;Gugalnica za rime ;Pemi, iz vsakdanjih reèi, napisane  igrivo in iskrivo.;29;20
+69;Prosim - hvala ;Nanizanka za malèke, govori o osnovah bontona.;29;19
+70;Mavrica bližine;Mavrièna pesniška zbirka za otroke, ki širi ljubezen do življenja, živih bitij in planeta.;29;19
+71;Lisica išèe vest;Pravljica, kjer otrok skozi pravljico posluša nasvete živali, kaj je pravzaprav vest.;29;12
+72;Bratovšèina Sinjega galeba ;Zgodba o pogumu, drznosti, tovarištvu in soèutju.;30;1
+73;Ena sama beseda;Zbirka vseh Paèkovih pesmi za odrasle.;31;10
+74;Angeli ;Pesniška zbirka o angelih, ki so, tako kot ljudje, sila razlièni, a skoraj vedno pripravljeni, da storijo kaj dobrega.;31;1
+75;Same pesmi o ljubezni ;Zbirka pesmi o ljubezni vseh vrst, pesmi o navezanosti.;31;10
+76;Romeo in Julija ;Medvedja ljubezenska zgodba.;31;21
+77;Majhnice in majnice ;Zbirka pesmi tako za starejše kot mlajše. ;31;21
+78;Jurij Muri v Afriki ;Glavni junak Jurij Muri se odpravi v Afriko. ;31;21
+79;Jurij Muri po Sloveniji ;Glavni junak Jurij Muri se odpravi po sloveniji.;31;21
+80;Jurij Muri gre po sreèo ;Glavni junak Jurij Muri se odpravi po sreèo. ;31;21
+81;Pogrešani napotki;Knjiga o starših ki dobijo otroka, nauèili so jih, kako ga umivajo, nahranijo, obleèejo. A kako naj ga vzgajajo?;32;22
+82;Kazen ;Knjiga, kjer starši najdejo odgovore na to, kdaj, kako in koliko strogo kaznovati – èe sploh.;32;22
+83;Punce, glavo gor!;Knjiga govori o dobrih uèiteljicah in o njihovem delu, o položaju danes in pri nas.;32;22
+84;Pot;Knjiga, z avtobiografskimi razmišljanji prezgodaj preminulega slovenskega alpinista.;33;1
+85;Pot - najlepše misli ;Knjiga, o najlepših stvareh v alpinizmu.;33;1
+86;Drejèek in trije marsovèki;Zgodba o malem deèku, ki se mu pripeti življenjska dogodivšèina;34;11
+87;Ustvarjen, torej sem ;Knjiga o ustvarjalnosti, sposobnost reševanja problemov na nov, izviren naèin. ;34;4
+88;Kataklizma ;Zgodba, v kateri na vse možne naèine opominja, naj že konèno enkrat zaènemo paziti na naš planet. ;34;11
+89;Èlovek in ekološka kriza;Knjiga prikazuje škodljivo poseganje posameznikov, gospodarskih panog in organizacij v naravno okolje.;34;4
+90;Joga za ženske ;Joga za ženske po metodi iyengar je prilagojena spreminjajoèim se potrebam žensk.;35;1
+91;Pravljièna joga ;Joga za otroke pozitivno deluje na otroško motoriko, koordinacijo in druge stvari.;35;1
+92;Joga za najmlajše;Joga za dojenèke, saj vpliva na njegov motorièni,kognitivni, socialni in èustveni razvoj.;36;1
+93;Joga mami in dojenèek ; Priroènik za mamice z dojenèki je sestavljen iz izèrpnih informacij o jogi in okrevanju po porodu.;36;1
