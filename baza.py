@@ -21,8 +21,7 @@ def ustvari_tabele(conn):
             naslov    TEXT,
             opis      TEXT,
             avtor     INTEGER REFERENCES avtor(id),
-            zalozba   INTEGER REFERENCES zalozba(id),
-            PRIMARY KEY (avtor, zalozba)
+            zalozba   INTEGER REFERENCES zalozba(id)
         );
     """)
     conn.execute("""
@@ -53,8 +52,7 @@ def ustvari_tabele(conn):
             rok_vracila     DATE,
             strosek         INTEGER,
             clan            INTEGER REFERENCES clan(id),
-            knjiga          INTEGER REFERENCES knjiga(id),
-            PRIMARY KEY (clan, knjige)
+            knjiga          INTEGER REFERENCES knjiga(id)
         );
     """)
 
@@ -65,7 +63,8 @@ def uvozi_knjige(conn):
     """
     conn.execute("DELETE FROM knjiga;")
     with open('podatki/knjiga.csv') as datoteka:
-        podatki = csv.reader(datoteka)
+        podatki = csv.reader(datoteka, delimiter=";")
+        next(podatki)
         stolpci = next(podatki)
         poizvedba = """
             INSERT INTO knjiga VALUES ({})
@@ -79,8 +78,9 @@ def uvozi_avtorje(conn):
     Uvozi podatke o avtorjih.
     """
     conn.execute("DELETE FROM avtor;")
-    with open('podatki/oseba.csv') as datoteka:
-        podatki = csv.reader(datoteka)
+    with open('podatki/avtor.csv') as datoteka:
+        podatki = csv.reader(datoteka, delimiter=";")
+        next(podatki)
         stolpci = next(podatki)
         poizvedba = """
             INSERT INTO avtor VALUES ({})
@@ -95,12 +95,14 @@ def uvozi_zalozbe(conn):
     """
     conn.execute("DELETE FROM zalozba;")
     with open('podatki/zalozba.csv') as datoteka:
-        podatki = csv.reader(datoteka)
+        podatki = csv.reader(datoteka, delimiter=";")
+        next(podatki)
         stolpci = next(podatki)
         poizvedba = """
             INSERT INTO zalozba VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
+            print(vrstica)
             conn.execute(poizvedba, vrstica)
 
 
@@ -108,12 +110,13 @@ def uvozi_clane(conn):
     """
     Uvozi podatke o članih.
     """
-    conn.execute("DELETE FROM clani;")
-    with open('podatki/clani.csv') as datoteka:
-        podatki = csv.reader(datoteka)
+    conn.execute("DELETE FROM clan;")
+    with open('podatki/clan.csv') as datoteka:
+        podatki = csv.reader(datoteka, delimiter=";")
+        next(podatki)
         stolpci = next(podatki)
         poizvedba = """
-            INSERT INTO clani VALUES ({})
+            INSERT INTO clan VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
             conn.execute(poizvedba, vrstica)
@@ -124,7 +127,8 @@ def uvozi_izposoje(conn):
     """
     conn.execute("DELETE FROM izposoja;")
     with open('podatki/izposoja.csv') as datoteka:
-        podatki = csv.reader(datoteka)
+        podatki = csv.reader(datoteka, delimiter=";")
+        next(podatki)
         stolpci = next(podatki)
         poizvedba = """
             INSERT INTO izposoja VALUES ({})
@@ -141,7 +145,7 @@ def ustvari_bazo(conn):
     ustvari_tabele(conn)
     uvozi_knjige(conn)
     uvozi_avtorje(conn)
-    uvozi_zalozbe
+    uvozi_zalozbe(conn)
     uvozi_clane(conn)
     uvozi_izposoje(conn)
 
