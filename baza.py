@@ -46,13 +46,12 @@ def ustvari_tabele(conn):
     """)
     conn.execute("""
         CREATE TABLE izposoja (
-            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            id              INTEGER REFERENCES knjiga(id);
             datum_izposoje  DATE,
             datum_vracila   DATE,
             rok_vracila     DATE,
             strosek         INTEGER,
             clan            INTEGER REFERENCES clan(id),
-            knjiga          INTEGER REFERENCES knjiga(id)
         );
     """)
 
