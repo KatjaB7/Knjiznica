@@ -41,7 +41,7 @@ def ustvari_tabele(conn):
         CREATE TABLE clan (
             id    INTEGER PRIMARY KEY AUTOINCREMENT,
             ime   TEXT,
-            dolg  INTEGER
+            dolg  REAL
         );
     """)
     conn.execute("""
@@ -50,7 +50,7 @@ def ustvari_tabele(conn):
             datum_izposoje  DATE,
             datum_vracila   DATE,
             rok_vracila     DATE,
-            strosek         INTEGER,
+            strosek         REAL,
             clan            INTEGER REFERENCES clan(id),
         );
     """)

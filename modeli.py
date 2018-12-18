@@ -194,3 +194,14 @@ def dodaj_vracilo(id_izposoje):
     with conn:
         return conn.execute(poizvedba, [id_izposoje]).lastrowid
 
+def dodaj_dolg(id_clana):
+    poizvedba = """
+        UPDATE clan
+        SELECT izposoja.strosek
+        FROM izposoja JOIN clan 
+        ON izposoja.id_clana = clan.id 
+        SET dolg = izposoja.strosek
+        WHERE clan.id = ?
+        """
+    with conn:
+        return conn.execute(poizvedba, [id_clana]).lastrowid
