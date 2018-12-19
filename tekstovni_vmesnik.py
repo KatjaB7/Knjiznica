@@ -124,7 +124,7 @@ def pokazi_moznosti():
         'dodaj člana',
         'dodaj knjigo',
         'vnesi izposojo knjige',
-        'vnesi vračilo knjige'
+        'vnesi vračilo knjige',
         'izhod',
     ])
     if izbira == 0:
