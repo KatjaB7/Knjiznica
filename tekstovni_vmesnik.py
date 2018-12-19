@@ -46,7 +46,7 @@ def izberi_knjigo():
     niz = input('Vnesite del naslova knjige > ')
     idji_knjig = modeli.poisci_knjige(niz)
     moznosti = [
-        '{} ({})'.format(naslov, opis) for _, naslov, leto in modeli.podatki_knjig(idji_knjig)
+        '{}'.format(naslov) for _, naslov, _ in modeli.podatki_knjig(idji_knjig)
     ]
     izbira = izberi_moznost(moznosti)
     return None if izbira is None else idji_knjig[izbira]
@@ -56,7 +56,7 @@ def izberi_clana():
     niz = input('Vnesite del imena clana > ')
     idji_clanov = modeli.poisci_clane(niz)
     moznosti = [
-        ime for ime, _, _ in modeli.podatki_clana(ideji_clanov)
+        ime for ime, _, _ in modeli.podatki_clana(idji_clanov)
     ]
     izbira = izberi_moznost(moznosti)
     return None if izbira is None else idji_clanov[izbira]
@@ -69,7 +69,7 @@ def prikazi_podatke_knjige():
     else:
         naslov, opis, avtorji, zalozbe = modeli.podatki_knjige(id_knjige)
 
-        print('{} ({})'.format(naslov))
+        print('{}'.format(naslov))
         print('  je napisal: {} min'.format(avtorji))
         print('  izdala: {}/10'.format(zalozbe))
         print(' kratek opis: {}'.format(opis))
