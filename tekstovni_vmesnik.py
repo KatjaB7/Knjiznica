@@ -46,151 +46,106 @@ def izberi_knjigo():
     niz = input('Vnesite del naslova knjige > ')
     idji_knjig = modeli.poisci_knjige(niz)
     moznosti = [
-        '{} ({})'.format(naslov, leto) for _, naslov, leto in modeli.podatki_knjig(idji_knjig)
+        '{} ({})'.format(naslov, opis) for _, naslov, leto in modeli.podatki_knjig(idji_knjig)
     ]
     izbira = izberi_moznost(moznosti)
     return None if izbira is None else idji_knjig[izbira]
 
 
-def izberi_osebo():
-    niz = input('Vnesite del imena osebe > ')
-    idji_oseb = modeli.poisci_osebe(niz)
+def izberi_clana():
+    niz = input('Vnesite del imena clana > ')
+    idji_clanov = modeli.poisci_clane(niz)
     moznosti = [
-        ime for _, ime in modeli.podatki_oseb(idji_oseb)
+        ime for ime, _, _ in modeli.podatki_clana(ideji_clanov)
     ]
     izbira = izberi_moznost(moznosti)
-    return None if izbira is None else idji_oseb[izbira]
+    return None if izbira is None else idji_clanov[izbira]
 
 
-def izberi_vlogo():
-    vloge = modeli.mozne_vloge()
-    moznosti = [
-        naziv for _, naziv in vloge
-    ]
-    izbira = izberi_moznost(moznosti)
-    id_vloge, _ = vloge[izbira]
-    return id_vloge
-
-
-def prikazi_podatke_filma():
-    id_filma = izberi_film()
-    if id_filma is None:
-        print('Noben film ne ustreza iskalnemu nizu.')
+def prikazi_podatke_knjige():
+    id_knjige = izberi_knjigo()
+    if id_knjige is None:
+        print('Nobena knjiga ne ustreza iskalnemu nizu.')
     else:
-        naslov, leto, dolzina, ocena, zanri, vloge = modeli.podatki_filma(id_filma)
-        reziserji = modeli.podatki_oseb([id_osebe for (id_osebe, vloga) in vloge if vloga == 'reziser'])
-        imena_reziserjev = [ime for (_, ime) in reziserji]
-        igralci = modeli.podatki_oseb([id_osebe for (id_osebe, vloga) in vloge if vloga == 'igralec'])
-        imena_igralcev = [ime for (_, ime) in igralci]
+        naslov, opis, avtorji, zalozbe = modeli.podatki_knjige(id_knjige)
 
-        print('{} ({})'.format(naslov, leto))
-        print('  dolžina: {} min'.format(dolzina))
-        print('  ocena: {}/10'.format(ocena))
-        print('  žanri: {}'.format(', '.join(zanri)))
-        if len(imena_reziserjev) == 1:
-            print('  režiser: {}'.format(imena_reziserjev[0]))
-        elif len(imena_reziserjev) > 1:
-            print('  režiserji: {}'.format(', '.join(imena_reziserjev)))
-        if len(imena_igralcev) == 1:
-            print('  igra: {}'.format(imena_igralcev[0]))
-        elif len(imena_igralcev) > 1:
-            print('  igrajo: {}'.format(', '.join(imena_igralcev)))
+        print('{} ({})'.format(naslov))
+        print('  je napisal: {} min'.format(avtorji))
+        print('  izdala: {}/10'.format(zalozbe))
+        print(' kratek opis: {}'.format(opis))
 
-
-def prikazi_podatke_osebe():
-    id_osebe = izberi_osebo()
-    if id_osebe is None:
-        print('Nobena oseba ne ustreza iskalnemu nizu.')
+def prikazi_podatke_clana():
+    id_clana = izberi_clana()
+    if id_clana is None:
+        print('Noben član ne ustreza iskalnemu nizu.')
     else:
-        ime, vloge = modeli.podatki_osebe(id_osebe)
-        naslovi_filmov = {
-            id_filma: '{} ({})'.format(naslov, leto)
-            for id_filma, naslov, leto
-            in modeli.podatki_filmov([id_filma for id_filma, _ in vloge])
+        ime, dolg, idji_knjig = modeli.podatki_clana(id_clana)
+        dolg += modeli.dodaj_dolg(id_clana)
+        naslovi_knjig = {
+            id_knjige: '{}'.format(naslov)
+            for _ , naslov, _
+            in modeli.podatki_knjig([id_knjige for id_knjige in idji_knjig])
         }
-
         print(ime)
-        for id_filma, vloga in vloge:
-            print('  {} - {}'.format(naslovi_filmov[id_filma], vloga))
+        if dolg != 0:
+            print('dolg: {}'.format(dolg))
+        for id_knjige in idji_knjig:
+            print(' izposojene knjige: {}'.format(naslovi_knjig[id_knjige]))
 
 
-def dodaj_vlogo():
-    id_osebe = izberi_osebo()
-    id_filma = izberi_film()
-    id_vloge = izberi_vlogo()
-    modeli.dodaj_vlogo(id_osebe, id_filma, id_vloge)
-    print('Vloga je uspešno dodana.')
+def dodaj_clana():
+    id_clana = izberi_clana()
+    ime = input('Vnesite ime člana > ')
+    modeli.dodaj_clana(id_clana, ime)
+    print('Član je uspešno dodan.')
 
-def prikazi_najboljse_filme_desetletja():
-    # TODO: preveri veljavnost vnosa števila
-    leto = int(input('Vnesite leto iz želenega desetletja > '))
-    desetletje, najboljsi_filmi = modeli.najboljsi_filmi_desetletja(leto)
+def dodaj_knjigo():
+    naslov = input('Vnesite naslov knjige > ')
+    opis = input('Vnesite opis knjige > ')
+    avtor = input('Vnesite avtorja knjige > ')
+    zalozba = input('Vnesite založbo, ki je izdala knjigo > ')
+    modeli.dodaj_knjigo(naslov, opis, avtor, zalozba)
 
-    print('V obdobju {} – {} so bili najboljši filmi:'.format(desetletje, desetletje + 9))
-    for i, (naslov, leto, ocena) in enumerate(najboljsi_filmi, 1):
-        print('{}. {} ({}), {}/10'.format(i, naslov, leto, ocena))
+def dodaj_izposojo():
+    id_clana = izberi_clana()
+    id_knjige = izberi_knjigo()
+    modeli.dodaj_izposojo(id_clana, id_knjige)
 
-def dodaj_film():
-    naslov = input('Vnesite naslov filma > ')
-    dolzina = int(input('Vnesite dolžino filma > '))
-    leto = int(input('Vnesite leto filma > '))
-    ocena = int(input('Vnesite oceno filma > '))
-    metascore = float(input('Vnesite metascore filma > '))
-    glasovi = int(input('Vnesite število glasov za film > '))
-    zasluzek = int(input('Vnesite zaslužek filma > '))
-    opis = input('Vnesite opis filma > ')
-    zanri = []
-    while True:
-        zanr = input('Vnesite žanr filma (prazno za konec) > ')
-        if zanr:
-            zanri.append(zanr)
-        else:
-            break
-    igralci = []
-    while True:
-        igralec = input('Vnesite igralca v filmu (prazno za konec) > ')
-        if igralec:
-            igralci.append(igralec)
-        else:
-            break
-    reziserji = []
-    while True:
-        reziser = input('Vnesite režiserja filma (prazno za konec) > ')
-        if reziser:
-            reziserji.append(reziser)
-        else:
-            break
-    modeli.dodaj_film(naslov, dolzina, leto, ocena, metascore,
-               glasovi, zasluzek, opis, zanri, igralci, reziserji)
+def dodaj_vracilo():
+    id_izposoje = izberi_knjigo()
+    modeli.dodaj_vracilo(id_izposoje)
+
 
 def pokazi_moznosti():
     print(50 * '-')
     izbira = izberi_moznost([
-        'prikaži podatke filma',
-        'prikaži podatke osebe',
-        'dodaj vlogo osebe v filmu',
-        'prikaži najboljše filme posameznega desetletja',
-        'dodaj film',
+        'prikaži podatke knjige',
+        'prikaži podatke člana',
+        'dodaj člana',
+        'dodaj knjigo',
+        'vnesi izposojo knjige',
+        'vnesi vračilo knjige'
         'izhod',
     ])
     if izbira == 0:
-        prikazi_podatke_filma()
+        prikazi_podatke_knjige()
     elif izbira == 1:
-        prikazi_podatke_osebe()
+        prikazi_podatke_clana()
     elif izbira == 2:
-        dodaj_vlogo()
+        dodaj_clana()
     elif izbira == 3:
-        prikazi_najboljse_filme_desetletja()
+        dodaj_knjigo()
     elif izbira == 4:
-        dodaj_film()
+        dodaj_izposojo()
+    elif izbira == 5:
+        dodaj_vracilo()
     else:
         print('Nasvidenje!')
         exit()
         
 
-
 def main():
-    print('Pozdravljeni v bazi najboljših filmov!')
+    print('Pozdravljeni v bazi knjižnice!')
     while True:
         pokazi_moznosti()
 

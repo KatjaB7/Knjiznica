@@ -152,7 +152,7 @@ def podatki_clana(id_clan):#dela ?
     else:
         ime, dolg, = osnovni_podatki
         poizvedba_za_knjige = """
-            SELECT izposoja.id_knjige
+            SELECT izposoja.id
             FROM izposoja
                  JOIN clan ON izposoja.id_clana = clan.id
             WHERE izposoja.id_clana = ?
@@ -200,7 +200,6 @@ def dodaj_dolg(id_clana):
         SELECT izposoja.strosek
         FROM izposoja JOIN clan 
         ON izposoja.id_clana = clan.id 
-        SET dolg = izposoja.strosek
         WHERE clan.id = ?
         """
     with conn:
