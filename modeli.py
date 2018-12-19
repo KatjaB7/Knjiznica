@@ -79,7 +79,7 @@ def podatki_knjige(id_knjige):
             WHERE knjiga.id_zalozbe = ?
         """
         cur.execute(poizvedba_za_zalozbo, [id_knjige])
-        zalozbe = cur.fetchall()
+        zalozbe = [vrsta[0] for vrsta in cur.fetchall()]
         return naslov, opis, avtorji, zalozbe
 
 
@@ -142,7 +142,9 @@ def podatki_clana(id_clan):#dela ?
     Vrne podatke o članu z danim IDjem.
     """
     poizvedba = """
-        SELECT ime, dolg FROM clan WHERE id = ?
+        SELECT ime, dolg 
+        FROM clan 
+        WHERE id = ?
     """
     cur = conn.cursor()
     cur.execute(poizvedba, [id_clan])
@@ -154,11 +156,11 @@ def podatki_clana(id_clan):#dela ?
         poizvedba_za_knjige = """
             SELECT izposoja.id
             FROM izposoja
-                 JOIN clan ON izposoja.id_clana = clan.id
+            JOIN clan ON izposoja.id_clana = clan.id
             WHERE izposoja.id_clana = ?
         """
         idji_knjig = []
-        for (id_knjige,) in conn.execute(poizvedba, ['%' + id_clan + '%']):
+        for (id_knjige,) in conn.execute(poizvedba_za_knjige, ['%' + id_clan + '%']):
             idji_knjig.append(id_knjige)
         return ime, dolg, idji_knjig
 
