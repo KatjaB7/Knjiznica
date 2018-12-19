@@ -46,7 +46,7 @@ def ustvari_tabele(conn):
     """)
     conn.execute("""
         CREATE TABLE izposoja (
-            id              INTEGER REFERENCES knjiga(id);
+            id              INTEGER REFERENCES knjiga(id),
             datum_izposoje  DATE,
             datum_vracila   DATE,
             rok_vracila     DATE,
