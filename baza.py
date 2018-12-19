@@ -51,8 +51,7 @@ def ustvari_tabele(conn):
             datum_vracila   DATE,
             rok_vracila     DATE,
             strosek         REAL,
-            clan            INTEGER REFERENCES clan(id),
-            PRIMARY KEY(knjiga)
+            clan            INTEGER REFERENCES clan(id)
         );
     """)
 
