@@ -67,16 +67,16 @@ def podatki_knjige(id_knjige):
         poizvedba_za_avtorja = """
             SELECT avtor.ime
             FROM avtor
-                 JOIN knjiga ON avtor.id = knjiga.id_avtorja
-            WHERE knjiga.id_avtorja = ?
+                 JOIN knjiga ON avtor.id = knjiga.avtor
+            WHERE knjiga.avtor = ?
         """
-        cur.execute(poizvedba_za_avtorja, [id_knjige])
+        cur.execute(poizvedba_za_avtorja, [id_knjige]).lastrowid
         avtorji = [vrstica[0] for vrstica in cur.fetchall()]
         poizvedba_za_zalozbo = """
-            SELECT zalozba.ime
+            SELECT zalozba.naziv
             FROM zalozba
-                 JOIN knjiga ON zalozba.id = knjiga.id_zalozbe
-            WHERE knjiga.id_zalozbe = ?
+                 JOIN knjiga ON zalozba.id = knjiga.zalozba
+            WHERE knjiga.zalozba = ?
         """
         cur.execute(poizvedba_za_zalozbo, [id_knjige])
         zalozbe = [vrsta[0] for vrsta in cur.fetchall()]
@@ -102,24 +102,24 @@ def id_zalozbe(zalozba, ustvari_ce_ne_obstaja=False):
     Vrne ID podane založbe.
     Če založba še ne obstaja, jo doda v bazo.
     """
-    vrstica = conn.execute("SELECT id FROM zalozba WHERE ime = ?", [zalozba]).fetchone() 
+    vrstica = conn.execute("SELECT id FROM zalozba WHERE naziv = ?", [zalozba]).fetchone() 
     if vrstica is not None:
         return vrstica[0]
     elif ustvari_ce_ne_obstaja:
-        return conn.execute("INSERT INTO zalozba (ime, kraj) VALUES (?, ?)", [zalozba]).lastrowid #popravit []
+        return conn.execute("INSERT INTO zalozba (naziv, kraj) VALUES (?, ?)", [zalozba]).lastrowid #popravit []
     else:
         return None
 
 
-def dodaj_knjigo(naslov, opis, avtor, zalozba):
+def dodaj_knjigo(naslov, opis, avtor):
     """
     V bazo doda knjigo ter njen opis, IDavtorja in IDknjige.
     """
     with conn:
         id = conn.execute("""
-            INSERT INTO knjiga (naslov, opis, id_avtorja, id_zalozbe)
+            INSERT INTO knjiga (naslov, opis, id_avtorja)
                             VALUES (?, ?, ?, ?)
-        """, [naslov, opis, id_avtorja(avtor, True), id_zalozbe(zalozba, True)]).lastrowid
+        """, [naslov, opis, id_avtorja(avtor, True)]).lastrowid
 
 def poisci_clane(niz):
     """
@@ -146,8 +146,7 @@ def podatki_clana(id_clan):#dela ?
         FROM clan 
         WHERE id = ?
     """
-    cur = conn.cursor()
-    cur.execute(poizvedba, [id_clan])
+    cur = conn.execute(poizvedba, [id_clan])
     osnovni_podatki = cur.fetchone()
     if osnovni_podatki is None:
         return None
@@ -156,11 +155,11 @@ def podatki_clana(id_clan):#dela ?
         poizvedba_za_knjige = """
             SELECT izposoja.id
             FROM izposoja
-            JOIN clan ON izposoja.id_clana = clan.id
-            WHERE izposoja.id_clana = ?
+            JOIN clan ON izposoja.clan = clan.id
+            WHERE izposoja.clan = ?
         """
         idji_knjig = []
-        for (id_knjige,) in conn.execute(poizvedba_za_knjige, ['%' + id_clan + '%']):
+        for (id_knjige,) in conn.execute(poizvedba_za_knjige, [id_clan]):
             idji_knjig.append(id_knjige)
         return ime, dolg, idji_knjig
 

@@ -56,7 +56,7 @@ def izberi_clana():
     niz = input('Vnesite del imena clana > ')
     idji_clanov = modeli.poisci_clane(niz)
     moznosti = [
-        ime for ime, _, _ in modeli.podatki_clana(idji_clanov)
+        modeli.podatki_clana(id_clana)[0] for id_clana in idji_clanov   #ni kul
     ]
     izbira = izberi_moznost(moznosti)
     return None if izbira is None else idji_clanov[izbira]
@@ -70,12 +70,12 @@ def prikazi_podatke_knjige():
         naslov, opis, avtorji, zalozbe = modeli.podatki_knjige(id_knjige)
 
         print('{}'.format(naslov))
-        print('  je napisal: {} min'.format(avtorji))
-        print('  izdala: {}/10'.format(zalozbe))
-        print(' kratek opis: {}'.format(opis))
+        print('  je napisal: {}, '.format(avtorji))
+        print('  je izdala založba: {},'.format(zalozbe))
+        print('  kratek opis: {}'.format(opis))
 
 def prikazi_podatke_clana():
-    id_clana = izberi_clana()
+    id_clana = izberi_clana()  #ni kul 
     if id_clana is None:
         print('Noben član ne ustreza iskalnemu nizu.')
     else:
@@ -103,8 +103,7 @@ def dodaj_knjigo():
     naslov = input('Vnesite naslov knjige > ')
     opis = input('Vnesite opis knjige > ')
     avtor = input('Vnesite avtorja knjige > ')
-    zalozba = input('Vnesite založbo, ki je izdala knjigo > ')
-    modeli.dodaj_knjigo(naslov, opis, avtor, zalozba)
+    modeli.dodaj_knjigo(naslov, opis, avtor)
 
 def dodaj_izposojo():
     id_clana = izberi_clana()
@@ -130,7 +129,7 @@ def pokazi_moznosti():
     if izbira == 0:
         prikazi_podatke_knjige()
     elif izbira == 1:
-        prikazi_podatke_clana()
+        prikazi_podatke_clana()   #ni kul 
     elif izbira == 2:
         dodaj_clana()
     elif izbira == 3:
@@ -147,7 +146,7 @@ def pokazi_moznosti():
 def main():
     print('Pozdravljeni v bazi knjižnice!')
     while True:
-        pokazi_moznosti()
+        pokazi_moznosti()  #ni kul 
 
 
 main()
