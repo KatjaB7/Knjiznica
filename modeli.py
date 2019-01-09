@@ -97,7 +97,7 @@ def id_avtorja(avtor, ustvari_ce_ne_obstaja=False):
         return None
 
 
-def id_zalozbe(zalozba, ustvari_ce_ne_obstaja=False):
+def id_zalozbe(zalozba, kraj, ustvari_ce_ne_obstaja=False):
     """
     Vrne ID podane založbe.
     Če založba še ne obstaja, jo doda v bazo.
@@ -106,20 +106,33 @@ def id_zalozbe(zalozba, ustvari_ce_ne_obstaja=False):
     if vrstica is not None:
         return vrstica[0]
     elif ustvari_ce_ne_obstaja:
-        return conn.execute("INSERT INTO zalozba (naziv, kraj) VALUES (?, ?)", [zalozba]).lastrowid #popravit []
+        return conn.execute("INSERT INTO zalozba (naziv, kraj) VALUES (?, ?)", [zalozba, kraj]).lastrowid 
+    else:
+        return None
+
+def id_clana(clan, ustvari_ce_ne_obstaja=False):
+    """
+    Vrne ID podanega člana.
+    Če ta oseba še ni član knjižnice, ga doda v bazo.
+    """
+    vrstica = conn.execute("SELECT id FROM clan WHERE ime = ?", [clan]).fetchone()
+    if vrstica is not None:
+        return vrstica[0]
+    elif ustvari_ce_ne_obstaja:
+        return conn.execute("INSERT INTO clan (ime) VALUES (?)", [clan]).lastrowid
     else:
         return None
 
 
-def dodaj_knjigo(naslov, opis, avtor):
+def dodaj_knjigo(naslov, opis, avtor, zalozba, kraj): 
     """
-    V bazo doda knjigo ter njen opis, IDavtorja in IDknjige.
+    V bazo doda knjigo ter njen opis, IDavtorja in IDkzalozbe.
     """
     with conn:
-        id = conn.execute("""
-            INSERT INTO knjiga (naslov, opis, id_avtorja)
+        conn.execute("""
+            INSERT INTO knjiga (naslov, opis, avtor, zalozba)
                             VALUES (?, ?, ?, ?)
-        """, [naslov, opis, id_avtorja(avtor, True)]).lastrowid
+        """, [naslov, opis, id_avtorja(avtor, True), id_zalozbe(zalozba, kraj, True)]).lastrowid
 
 def poisci_clane(niz):
     """
@@ -137,7 +150,7 @@ def poisci_clane(niz):
     return idji_clanov
 
 
-def podatki_clana(id_clan):#dela ?
+def podatki_clana(id_clan):
     """
     Vrne podatke o članu z danim IDjem.
     """
@@ -163,44 +176,43 @@ def podatki_clana(id_clan):#dela ?
             idji_knjig.append(id_knjige)
         return ime, dolg, idji_knjig
 
-def dodaj_clana(id_clana, ime_clana): 
+def dodaj_clana(ime_clana): 
     poizvedba = """
         INSERT INTO clan
-        (id, ime, dolg)
-        VALUES (?, ?, 0)
+        (ime, dolg)
+        VALUES (?, 0)
     """
     with conn:
-        conn.execute(poizvedba, [id_clana, ime_clana])
+        conn.execute(poizvedba, [id_clana(ime_clana, True)])
 
 
 def dodaj_izposojo(id_clan, id_knjiga): 
     poizvedba = """
         INSERT INTO izposoja
-        (datum_izposoje, rok_vracila, id_clana, id_knjige)
+        (datum_izposoje, rok_vracila, clan, id)
         VALUES (date('now'), date('now', '+21 days'), ?, ?)
     """
     with conn:
         return conn.execute(poizvedba, [id_clan, id_knjiga]).lastrowid
 
-def dodaj_vracilo(id_izposoje): 
+def dodaj_vracilo(id_izposoje): #ne dela
     poizvedba = """
-        UPDATE izposoja
-        SET datum_vracila = date('now')
-        WHERE id = ?
+        UPDATE izposoja, clan
+        SELECT izposoja.clan
+        SET iposoja.datum_vracila = date('now')
+        WHERE izposoja.id = ?
         CASE 
-        WHEN datum_vracila > rok_vracila
-        THEN SET strosek = (((datum_vracila - rok_vracila)* 0.5) AS INTEGER)
+            WHEN datum_vracila > rok_vracila
+            THEN SET clan.dolg += (((datum_vracila - rok_vracila)* 0.5) AS INTEGER)
         END
         """
     with conn:
         return conn.execute(poizvedba, [id_izposoje]).lastrowid
 
-def dodaj_dolg(id_clana):
+def poravnava_dolga(id_clana):
     poizvedba = """
         UPDATE clan
-        SELECT izposoja.strosek
-        FROM izposoja JOIN clan 
-        ON izposoja.id_clana = clan.id 
+        SET dolg = 0
         WHERE clan.id = ?
         """
     with conn:

@@ -50,7 +50,6 @@ def ustvari_tabele(conn):
             datum_izposoje  DATE,
             datum_vracila   DATE,
             rok_vracila     DATE,
-            strosek         REAL,
             clan            INTEGER REFERENCES clan(id)
         );
     """)
