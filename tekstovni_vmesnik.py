@@ -67,11 +67,11 @@ def prikazi_podatke_knjige():
     if id_knjige is None:
         print('Nobena knjiga ne ustreza iskalnemu nizu.')
     else:
-        naslov, opis, avtorji, zalozbe = modeli.podatki_knjige(id_knjige)
+        naslov, opis, avtor, zalozba = modeli.podatki_knjige(id_knjige)
 
         print('{}'.format(naslov))
-        print('  je napisal: {}, '.format(avtorji))
-        print('  je izdala založba: {},'.format(zalozbe))
+        print('  je napisal: {}, '.format(avtor))
+        print('  je izdala založba: {},'.format(zalozba))
         print('  kratek opis: {}'.format(opis))
 
 def prikazi_podatke_clana():
@@ -97,7 +97,7 @@ def dodaj_clana():
     modeli.dodaj_clana(ime)
     print('Član je uspešno dodan.')
 
-def dodaj_knjigo(): #ne doda avtorja in založbe
+def dodaj_knjigo(): 
     naslov = input('Vnesite naslov knjige > ')
     opis = input('Vnesite opis knjige > ')
     avtor = input('Vnesite avtorja knjige > ')
@@ -111,7 +111,7 @@ def dodaj_izposojo():
     modeli.dodaj_izposojo(id_clana, id_knjige)
     print('Knjiga je izposojena.')
 
-def dodaj_vracilo(): #ne dela
+def dodaj_vracilo(): 
     id_izposoje = izberi_knjigo()
     modeli.dodaj_vracilo(id_izposoje)
     print('Knjiga je vrnjena.')
@@ -150,7 +150,7 @@ def pokazi_moznosti():
         poravnava_dolga()
     else:
         print('Nasvidenje!')
-        exit() #nekaj ne dela
+        exit() 
         
 def main():
     print('Pozdravljeni v bazi knjižnice!')

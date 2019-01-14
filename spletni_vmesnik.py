@@ -6,20 +6,14 @@ import hashlib
 def url_knjiznice(id):
     return '/knjiznica/{}/'.format(id)
 
-moznosti = ['iskanje', 'prikazi podatke knjige', 'dodaj clana', 'dodaj knjigo', 'dodaj izposojo', 
-            'dodaj vracilo']
-
 @get('/')
 def glavna_stran():
-    izbire = [
-        (izbira, '/{}/'.format(izbira)) 
-        for izbira in moznosti
-    ]
-    return template(
-        'glavna_stran',
-        izbire = izbire
-    )
-
+    st_knjig = modeli.stevilo_knjig()
+    st_clanov = modeli.stevilo_clanov()
+    return template('Glavna_stran',
+                    st_knjig = st_knjig,
+                    st_clanov = st_clanov
+                    )
 
 
 
@@ -27,25 +21,23 @@ def glavna_stran():
 def iskanje_knjig():
     niz = request.query.naslov
     idji_knjig = modeli.poisci_knjige(niz)
-    knjige = [(id, naslov, opis, '/film/{}/'.format(id)) for (id, naslov, opis) in modeli.podatki_knjig(idji_knjig)]
+    knjige = [(id, naslov, opis, '/knjiznica/{}/'.format(id)) for (id, naslov, opis) in modeli.podatki_knjig(idji_knjig)]
     return template(
-        'rezultati_iskanja',
+        'rezultati_iskanja_knjige',
         niz=niz,
         knjige=knjige,
 )
 
-
 @get('/knjiznica/<id_knjige:int>/')
 def podatki_knjige(id_knjige):
-    naslov, opis, avtorji, zalozbe = modeli.podatki_knjige(id_knjige)
+    naslov, opis, avtor, zalozba = modeli.podatki_knjige(id_knjige)
     return template(
-        'podatki_filma',
+        'podatki_knjige',
         naslov=naslov,
         opis=opis,
-        avtorji=avtorji,
-        zalozbe=zalozbe,
+        avtorji=avtor,
+        zalozbe=zalozba,
 )
-
 
 @get('/knjiznica/<id_knjige:int>/')
 def podatki_clana(id_clan):
@@ -57,7 +49,7 @@ def podatki_clana(id_clan):
         idji_knjig=idji_knjig,
 )
 
-@get('/dodaj_knjigo/')    #zakaj rabimo dve ? nisem fix ce rabimo dve 
+@get('/dodaj_knjigo/')    
 def dodaj_knjigo():
     return template('dodaj_knjigo',
                     naslov="",
@@ -73,8 +65,9 @@ def dodajanje_knjige():
                             naslov=request.forms.naslov,
                             opis=request.forms.opis,
                             avtor=request.forms.avtor)
-     redirect('/knjiznica/{}/'.format(id))  #izpis? 
+    redirect('/knjiznica/{}/'.format(id)) 
 
 
 
+bottle.run(reloader=True)
                                

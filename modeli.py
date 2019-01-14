@@ -68,19 +68,19 @@ def podatki_knjige(id_knjige):
             SELECT avtor.ime
             FROM avtor
                  JOIN knjiga ON avtor.id = knjiga.avtor
-            WHERE knjiga.avtor = ?
+            WHERE knjiga.id = ?
         """
-        cur.execute(poizvedba_za_avtorja, [id_knjige]).lastrowid
-        avtorji = [vrstica[0] for vrstica in cur.fetchall()]
+        avtor = cur.execute(poizvedba_za_avtorja, [id_knjige]).lastrowid
+        #avtor = [vrstica[0] for vrstica in cur.fetchall()]
         poizvedba_za_zalozbo = """
             SELECT zalozba.naziv
             FROM zalozba
                  JOIN knjiga ON zalozba.id = knjiga.zalozba
-            WHERE knjiga.zalozba = ?
+            WHERE knjiga.id = ?
         """
-        cur.execute(poizvedba_za_zalozbo, [id_knjige])
+        zalozba = cur.execute(poizvedba_za_zalozbo, [id_knjige])
         zalozbe = [vrsta[0] for vrsta in cur.fetchall()]
-        return naslov, opis, avtorji, zalozbe
+        return naslov, opis, avtor, zalozba
 
 
 def id_avtorja(avtor, ustvari_ce_ne_obstaja=False):
@@ -90,7 +90,7 @@ def id_avtorja(avtor, ustvari_ce_ne_obstaja=False):
     """
     vrstica = conn.execute("SELECT id FROM avtor WHERE ime = ?", [avtor]).fetchone()
     if vrstica is not None:
-        return vrstica[0]
+        return vrstica
     elif ustvari_ce_ne_obstaja:
         return conn.execute("INSERT INTO avtor (ime) VALUES (?)", [avtor]).lastrowid
     else:
@@ -104,7 +104,7 @@ def id_zalozbe(zalozba, kraj, ustvari_ce_ne_obstaja=False):
     """
     vrstica = conn.execute("SELECT id FROM zalozba WHERE naziv = ?", [zalozba]).fetchone() 
     if vrstica is not None:
-        return vrstica[0]
+        return vrstica
     elif ustvari_ce_ne_obstaja:
         return conn.execute("INSERT INTO zalozba (naziv, kraj) VALUES (?, ?)", [zalozba, kraj]).lastrowid 
     else:
@@ -195,19 +195,22 @@ def dodaj_izposojo(id_clan, id_knjiga):
     with conn:
         return conn.execute(poizvedba, [id_clan, id_knjiga]).lastrowid
 
-def dodaj_vracilo(id_izposoje): #ne dela
+def dodaj_vracilo(id_izposoje): 
     poizvedba = """
-        UPDATE izposoja, clan
-        SELECT izposoja.clan
-        SET iposoja.datum_vracila = date('now')
-        WHERE izposoja.id = ?
-        CASE 
-            WHEN datum_vracila > rok_vracila
-            THEN SET clan.dolg += (((datum_vracila - rok_vracila)* 0.5) AS INTEGER)
-        END
-        """
-    with conn:
-        return conn.execute(poizvedba, [id_izposoje]).lastrowid
+        UPDATE izposoja SET datum_vracila = date('now') WHERE id = ?
+    """
+    conn.execute(poizvedba, [id_izposoje])
+    poizvedba_rok = """
+        SELECT rok_vracila, datum_vracila, clan FROM izposoja WHERE id = ?
+    """
+    rok, datum, clan = conn.execute(poizvedba_rok, [id_izposoje]).fetchone()
+    if datum > rok:
+        poizvedba = """
+            UPDATE clan SET dolg = dolg + julianday(?) - julianday(?)
+            WHERE id = ?
+            """
+        with conn:
+            conn.execute(poizvedba, [datum, rok, clan])
 
 def poravnava_dolga(id_clana):
     poizvedba = """
