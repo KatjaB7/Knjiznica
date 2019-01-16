@@ -79,7 +79,6 @@ def podatki_knjige(id_knjige):
             WHERE knjiga.id = ?
         """
         zalozba = cur.execute(poizvedba_za_zalozbo, [id_knjige])
-        zalozbe = [vrsta[0] for vrsta in cur.fetchall()]
         return naslov, opis, avtor, zalozba
 
 
@@ -148,6 +147,19 @@ def poisci_clane(niz):
     for (id_clana,) in conn.execute(poizvedba, ['%' + niz + '%']):
         idji_clanov.append(id_clana)
     return idji_clanov
+
+
+def podatki_clanov(idji_clanov):
+    """
+    Vrne osnovne podatke vseh clanov z danimi IDji.
+    """
+    poizvedba = """
+        SELECT id, ime, dolg
+        FROM clan
+        WHERE id IN ({})
+    """.format(', '.join(len(idji_clanov) * ['?']))
+    return conn.execute(poizvedba, idji_clanov).fetchall()
+
 
 
 def podatki_clana(id_clan):
@@ -220,3 +232,18 @@ def poravnava_dolga(id_clana):
         """
     with conn:
         return conn.execute(poizvedba, [id_clana]).lastrowid
+
+def seznam_zalozb():
+    poizvedba = """
+        SELECT id, naziv FROM zalozba
+        ORDER BY naziv
+    """
+    return conn.execute(poizvedba).fetchall()
+
+def seznam_krajev():
+    poizvedba = """
+        SELECT id, kraj FROM zalozba
+        ORDER BY kraj
+    """
+    return conn.execute(poizvedba).fetchall()
+

@@ -21,6 +21,23 @@ Na voljo vam je tudi iskanje knjig po naslovu:
 <input type="submit" value="Išči">
 </form>
 
+
+<p>
+Na voljo vam je tudi iskanje knjig, glede na avtorja:
+</p>
+<form action="iskanje_avtorjev/" method="get">
+<input type="text" name="ime" value="" />
+<input type="submit" value="Išči">
+</form>
+
+<p>
+Na voljo vam je tudi iskanje članov, kjer lahko preverite vaše stanje:
+</p>
+<form action="iskanje_clanov/" method="get">
+<input type="text" name="ime" value="" />
+<input type="submit" value="Išči">
+</form>
+
 <p>
 <a href="dodaj_knjigo/">Dodaj knjigo</a>
 </p>

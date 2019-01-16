@@ -15,7 +15,7 @@ def glavna_stran():
                     st_clanov = st_clanov
                     )
 
-
+#dodaj iskanje po avtorju
 
 @get('/iskanje_knjig/')
 def iskanje_knjig():
@@ -28,6 +28,18 @@ def iskanje_knjig():
         knjige=knjige,
 )
 
+@get('/iskanje_clanov/')
+def iskanje_clanov():
+    niz = request.query.ime
+    idji_clanov = modeli.poisci_clane(niz)
+    clani = [(id,ime, dolg, '/knjiznica/{}/'.format(id)) for (id, ime, dolg) in modeli.podatki_clanov(idji_clanov)]
+    return template(
+        'rezultati_iskanja_clanov',
+        niz=niz,
+        clani=clani,
+ )
+
+
 @get('/knjiznica/<id_knjige:int>/')
 def podatki_knjige(id_knjige):
     naslov, opis, avtor, zalozba = modeli.podatki_knjige(id_knjige)
@@ -39,7 +51,7 @@ def podatki_knjige(id_knjige):
         zalozbe=zalozba,
 )
 
-@get('/knjiznica/<id_knjige:int>/')
+@get('/knjiznica/<id_clana:int>/')
 def podatki_clana(id_clan):
     ime, dolg, idji_knjig = modeli.podatki_clana(id_clan)
     return template(
@@ -49,25 +61,39 @@ def podatki_clana(id_clan):
         idji_knjig=idji_knjig,
 )
 
+
+
 @get('/dodaj_knjigo/')    
 def dodaj_knjigo():
+    zalozba = modeli.seznam_zalozb()
+    kraj = modeli.seznam_krajev()
     return template('dodaj_knjigo',
                     naslov="",
                     opis="",
-                    avtor="",)
+                    avtor="",
+                    zalozba = "",
+                    kraj = "",
+                    napaka=False)
 
 @post('/dodaj_knjigo/')
 def dodajanje_knjige():
-    modeli.dodaj_knjigo(naslov=request.forms.naslov,  #preveri
-                            opis=request.forms.opis,
-                            avtor=request.forms.avtor)
-    return template('dodaj_knjigo',
+    try:
+        id = modeli.dodaj_knjigo(naslov=request.forms.naslov,  
+                                opis=request.forms.opis,
+                                avtor=request.forms.avtor,
+                                zalozba=request.forms.zalozba,
+                                kraj=request.forms.kraj)
+    except: 
+        zalozba = modeli.seznam_zalozb()
+        kraj = modeli.seznam_krajev()
+        return template('dodaj_knjigo',
                             naslov=request.forms.naslov,
                             opis=request.forms.opis,
-                            avtor=request.forms.avtor)
+                            avtor=request.forms.avtor,
+                            zalozba=request.forms.zalozba,
+                            kraj=request.forms.kraj,
+                            napaka=True)
     redirect('/knjiznica/{}/'.format(id)) 
 
-
-
-bottle.run(reloader=True)
+run( reloader = True)
                                
