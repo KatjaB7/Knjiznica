@@ -41,7 +41,7 @@ def podatki_knjig(idji_knjig):
     Vrne osnovne podatke vseh knjig z danimi IDji.
     """
     poizvedba = """
-        SELECT id, naslov, opis
+        SELECT id, naslov, opis, avtor
         FROM knjiga 
         WHERE id IN ({})
     """.format(', '.join(len(idji_knjig) * ['?']))
@@ -89,7 +89,7 @@ def id_avtorja(avtor, ustvari_ce_ne_obstaja=False):
     """
     vrstica = conn.execute("SELECT id FROM avtor WHERE ime = ?", [avtor]).fetchone()
     if vrstica is not None:
-        return vrstica
+        return vrstica[0]
     elif ustvari_ce_ne_obstaja:
         return conn.execute("INSERT INTO avtor (ime) VALUES (?)", [avtor]).lastrowid
     else:
@@ -103,7 +103,7 @@ def id_zalozbe(zalozba, kraj, ustvari_ce_ne_obstaja=False):
     """
     vrstica = conn.execute("SELECT id FROM zalozba WHERE naziv = ?", [zalozba]).fetchone() 
     if vrstica is not None:
-        return vrstica
+        return vrstica[0]
     elif ustvari_ce_ne_obstaja:
         return conn.execute("INSERT INTO zalozba (naziv, kraj) VALUES (?, ?)", [zalozba, kraj]).lastrowid 
     else:
@@ -128,10 +128,64 @@ def dodaj_knjigo(naslov, opis, avtor, zalozba, kraj):
     V bazo doda knjigo ter njen opis, IDavtorja in IDkzalozbe.
     """
     with conn:
-        conn.execute("""
+        podatki = [naslov, opis, id_avtorja(avtor, True), id_zalozbe(zalozba, kraj, True)]
+        print(podatki)
+        return conn.execute("""
             INSERT INTO knjiga (naslov, opis, avtor, zalozba)
                             VALUES (?, ?, ?, ?)
-        """, [naslov, opis, id_avtorja(avtor, True), id_zalozbe(zalozba, kraj, True)]).lastrowid
+        """, podatki).lastrowid
+
+def poisci_avtorje(niz):
+    """
+    Funkcija, ki vrne IDje vseh clanov, katerih ime vsebuje dani niz.
+    """
+    poizvedba = """
+        SELECT id
+        FROM avtor
+        WHERE ime LIKE ?
+        ORDER BY ime
+    """
+    idji_avtorjev = []
+    for (id_avtorja,) in conn.execute(poizvedba, ['%' + niz + '%']):
+        idji_avtorjev.append(id_avtorja)
+    return idji_avtorjev
+
+def podatki_avtorjev(idji_avtorjev):
+    """
+    Vrne osnovne podatke vseh avtorjev z danimi IDji.
+    """
+    poizvedba = """
+        SELECT id, ime
+        FROM avtor
+        WHERE id IN ({})
+    """.format(', '.join(len(idji_avtorjev) * ['?']))
+    return conn.execute(poizvedba, idji_avtorjev).fetchall()
+
+def podatki_avtor(id_avtorja):  #ni kul še
+    """
+    Vrne podatke o avtorju z danim IDjem.
+    """
+    poizvedba = """
+        SELECT ime,  
+        FROM avtor
+        WHERE id = ?
+    """
+    cur = conn.execute(poizvedba, [id_avtorja])
+    osnovni_podatki = cur.fetchone()
+    if osnovni_podatki is None:
+        return None
+    else:
+        ime,  = osnovni_podatki
+        poizvedba_za_knjige = """
+            SELECT knjiga.id
+            FROM knjige
+        """
+        idji_knjig = []
+        for (id_knjige,) in conn.execute(poizvedba_za_knjige, [id_avtorja]):
+            idji_knjig.append(id_knjige)
+        return ime, idji_knjig
+
+
 
 def poisci_clane(niz):
     """
@@ -195,7 +249,7 @@ def dodaj_clana(ime_clana):
         VALUES (?, 0)
     """
     with conn:
-        conn.execute(poizvedba, [id_clana(ime_clana, True)])
+        return conn.execute(poizvedba, [id_clana(ime_clana, True)]).lastrowid
 
 
 def dodaj_izposojo(id_clan, id_knjiga): 
