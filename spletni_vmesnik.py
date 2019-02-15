@@ -3,6 +3,12 @@ from bottle import get, post, run, template, request, redirect
 import modeli
 import hashlib
 
+KRIVNOST = 'moja skrivnost'
+
+def prijavljen_uporabnik():
+    return request.get_cookie('prijavljen', secret=SKRIVNOST) == 'da'
+
+
 def url_knjiznice(id):
     return '/knjiznica/{}/'.format(id)
 
@@ -15,7 +21,7 @@ def glavna_stran():
                     st_clanov = st_clanov
                     )
 
-#dodaj iskanje po avtorju
+#dodaj iskanje založbe
 
 @get('/iskanje_knjig/')
 def iskanje_knjig():
@@ -32,7 +38,7 @@ def iskanje_knjig():
 def iskanje_clanov():
     niz = request.query.ime
     idji_clanov = modeli.poisci_clane(niz)
-    clani = [(id,ime, dolg, '/knjiznica/{}/'.format(id)) for (id, ime, dolg) in modeli.podatki_clanov(idji_clanov)]
+    clani = [(id,ime, dolg, '/clani/{}/'.format(id)) for (id, ime, dolg) in modeli.podatki_clanov(idji_clanov)]
     return template(
         'rezultati_iskanja_clanov',
         niz=niz,
@@ -50,16 +56,18 @@ def iskanje_avtorjev():
         avtorji=avtorji,
  )
 
+#dodaj podatki založbe
+
+
 @get('/avtorji/<id_avtorja:int>/')
 def podatki_avtorja(id_avtorja):
-    naslov, opis, avtor, zalozba = modeli.podatki_avtor(id_avtorja)
+    ime, idji_knjig = modeli.podatki_avtor(id_avtorja)
     return template(
-        'podatki_knjige',
-        naslov=naslov,
-        opis=opis,
-        avtorji=avtor,
-        zalozbe=zalozba,
-)
+        'podatki_avtor',
+        ime = ime, 
+        idji_knjig = idji_knjig,
+        )
+
 
 
 @get('/knjiznica/<id_knjige:int>/')
@@ -75,13 +83,13 @@ def podatki_knjige(id_knjige):
 
 @get('/clani/<id_clan:int>/')
 def podatki_clana(id_clan):
-    ime = modeli.podatki_clana(id_clan)
+    ime, dolg, idji_knjig = modeli.podatki_clana(id_clan)
     return template(
         'podatki_clana',
         ime=ime,
-    
+        dolg = dolg,
+        idji_knjig = idji_knjig,    
 )
-
 
 #ko dodaš založbo boma nardili seznam da izbereš med unimo ko so ker itak v primeru 
 #da je še ni pač najprej dodaš založbo pa pol ne ....
@@ -136,6 +144,62 @@ def dodajanje_clana():
                             #dolg = request.forms.dolg,
                             napaka=True)
     redirect('/clani/{}/'.format(id)) 
+
+
+@get('/dodaj_zalozbo/')    
+def dodaj_zalozbo():
+    return template('dodaj_zalozbo',
+                    zalozba="",
+                    kraj = "",
+                    napaka=False)
+
+@post('/dodaj_zalozbo/')
+def dodajanje_zalozbe():
+    try:
+        id = modeli.id_zalozbe(request.forms.ime)
+    except Exception as ex: 
+        return template('dodaj_zalozbo',
+                            zalozba=request.forms.zalozba,
+                            kraj = request.forms.kraj,
+                            #dolg = request.forms.dolg,
+                            napaka=True)
+    redirect('/zalozbe/{}/'.format(id)) 
+
+
+run( reloader = True, debug= True)
+
+
+
+#prijavaa
+
+@post('/prijava/')
+def prijava():
+    uporabnisko_ime = request.forms.uporabnisko_ime
+    geslo = request.forms.geslo
+    if modeli.preveri_geslo(uporabnisko_ime, geslo):
+        bottle.response.set_cookie(
+            'prijavljen', 'da', secret=SKRIVNOST, path='/')
+        redirect('/')
+    else:
+        raise bottle.HTTPError(403, "BOOM!")
+
+@get('/odjava/')
+def odjava():
+    bottle.response.set_cookie('prijavljen', '', path='/')
+    redirect('/')
+
+@post('/registracija/')
+def registracija():
+    uporabnisko_ime = request.forms.uporabnisko_ime
+    geslo = request.forms.geslo
+    if modeli.ustvari_uporabnika(uporabnisko_ime, geslo):
+        bottle.response.set_cookie(
+            'prijavljen', 'da', secret=SKRIVNOST, path='/')
+        redirect('/')
+    else:
+        raise bottle.HTTPError(
+403, "Uporabnik s tem uporabniškim imenom že obstaja!")
+
 
 run( reloader = True, debug= True)
 

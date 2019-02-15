@@ -46,3 +46,7 @@ Na voljo vam je tudi iskanje članov, kjer lahko preverite vaše stanje:
 <a href="dodaj_clana/">Dodaj clana</a>
 </p>
 
+<p>
+<a href="dodaj_zalozbo/">Dodaj zalozbo</a>
+</p>
+

@@ -1,5 +1,7 @@
 import baza
 import sqlite3
+import random
+import hashlib
 
 conn = sqlite3.connect('Knjiznica.db')
 baza.ustvari_bazo_ce_ne_obstaja(conn)
@@ -166,7 +168,7 @@ def podatki_avtor(id_avtorja):  #ni kul še
     Vrne podatke o avtorju z danim IDjem.
     """
     poizvedba = """
-        SELECT ime,  
+        SELECT ime
         FROM avtor
         WHERE id = ?
     """
@@ -235,7 +237,7 @@ def podatki_clana(id_clan):
             SELECT izposoja.id
             FROM izposoja
             JOIN clan ON izposoja.clan = clan.id
-            WHERE izposoja.clan = ?
+            WHERE clan.id = ?
         """
         idji_knjig = []
         for (id_knjige,) in conn.execute(poizvedba_za_knjige, [id_clan]):
@@ -301,3 +303,63 @@ def seznam_krajev():
     """
     return conn.execute(poizvedba).fetchall()
 
+registraacijaaa - prijavaa
+
+def zakodiraj(geslo, sol=None):
+    if sol is None:
+        sol = ''.join(chr(random.randint(65, 122)) for _ in range(16))
+    posoljeno_geslo = geslo + '$' + sol
+    zakodirano_geslo = hashlib.sha512(posoljeno_geslo.encode()).hexdigest()
+    return zakodirano_geslo, sol
+
+def preveri_geslo(uporabnisko_ime, geslo):
+    poizvedba = """
+        SELECT geslo, sol FROM uporabniki
+        WHERE uporabnisko_ime = ?
+    """
+    uporabnik = conn.execute(poizvedba, [uporabnisko_ime]).fetchone()
+    if uporabnik is None:
+        return False
+    shranjeno_geslo, sol = uporabnik
+    zakodirano_geslo, _ = zakodiraj(geslo, sol)
+    return shranjeno_geslo == zakodirano_geslo
+
+
+def ustvari_uporabnika(uporabnisko_ime, geslo):
+    poizvedba = """
+        INSERT INTO uporabniki
+        (uporabnisko_ime, geslo, sol)
+        VALUES (?, ?, ?)
+    """
+    with conn:
+        zakodirano_geslo, sol = zakodiraj(geslo)
+        conn.execute(poizvedba, [uporabnisko_ime, zakodirano_geslo, sol]).fetchone()
+        return True       sol = ''.join(chr(random.randint(65, 122)) for _ in range(16))
+    posoljeno_geslo = geslo + '$' + sol
+    zakodirano_geslo = hashlib.sha512(posoljeno_geslo.encode()).hexdigest()
+    return zakodirano_geslo, sol
+
+
+def preveri_geslo(uporabnisko_ime, geslo):
+    poizvedba = """
+        SELECT geslo, sol FROM uporabniki
+        WHERE uporabnisko_ime = ?
+    """
+    uporabnik = conn.execute(poizvedba, [uporabnisko_ime]).fetchone()
+    if uporabnik is None:
+        return False
+    shranjeno_geslo, sol = uporabnik
+    zakodirano_geslo, _ = zakodiraj(geslo, sol)
+    return shranjeno_geslo == zakodirano_geslo
+
+
+def ustvari_uporabnika(uporabnisko_ime, geslo):
+    poizvedba = """
+        INSERT INTO uporabniki
+        (uporabnisko_ime, geslo, sol)
+        VALUES (?, ?, ?)
+    """
+    with conn:
+        zakodirano_geslo, sol = zakodiraj(geslo)
+        conn.execute(poizvedba, [uporabnisko_ime, zakodirano_geslo, sol]).fetchone()
+        return True

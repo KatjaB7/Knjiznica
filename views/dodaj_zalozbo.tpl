@@ -12,6 +12,5 @@ Zalozba: <input type="text" name="zalozba" value="{{zalozba}}" /><br />
 Kraj zalozbe: <input type="text" name="kraj" value="{{kraj}}" /><br />   
 
 
-<input type="submit" value="dodaj knjigo">
-
+<input type="submit" value="dodaj zalozbo">
 </form>
