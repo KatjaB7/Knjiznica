@@ -3,7 +3,7 @@ from bottle import get, post, run, template, request, redirect
 import modeli
 import hashlib
 
-KRIVNOST = 'moja skrivnost'
+SKRIVNOST = 'moja skrivnost'
 
 def prijavljen_uporabnik():
     return request.get_cookie('prijavljen', secret=SKRIVNOST) == 'da'
@@ -56,8 +56,6 @@ def iskanje_avtorjev():
         avtorji=avtorji,
  )
 
-#dodaj podatki založbe
-
 
 @get('/avtorji/<id_avtorja:int>/')
 def podatki_avtorja(id_avtorja):
@@ -95,8 +93,10 @@ def podatki_clana(id_clan):
 #da je še ni pač najprej dodaš založbo pa pol ne ....
 @get('/dodaj_knjigo/')    
 def dodaj_knjigo():
-    zalozba = modeli.seznam_zalozb()
-    kraj = modeli.seznam_krajev()
+    if not prijavljen_uporabnik():
+        raise bottle.HTTPError(401)
+    #zalozba = modeli.seznam_zalozb()
+    #kraj = modeli.seznam_krajev()
     return template('dodaj_knjigo',
                     naslov="",
                     opis="",
@@ -107,6 +107,8 @@ def dodaj_knjigo():
 
 @post('/dodaj_knjigo/')
 def dodajanje_knjige():
+    if not prijavljen_uporabnik():
+        raise bottle.HTTPError(401)
     try:
         id = modeli.dodaj_knjigo(naslov=request.forms.naslov,  
                                 opis=request.forms.opis,
@@ -129,6 +131,8 @@ def dodajanje_knjige():
 
 @get('/dodaj_clana/')    
 def dodaj_clana():
+    if not prijavljen_uporabnik():
+        raise bottle.HTTPError(401)
     return template('dodaj_clana',
                     ime="",
                     dolg = "",
@@ -136,6 +140,8 @@ def dodaj_clana():
 
 @post('/dodaj_clana/')
 def dodajanje_clana():
+    if not prijavljen_uporabnik():
+        raise bottle.HTTPError(401)
     try:
         id = modeli.dodaj_clana(request.forms.ime)
     except Exception as ex: 
@@ -148,6 +154,9 @@ def dodajanje_clana():
 
 @get('/dodaj_zalozbo/')    
 def dodaj_zalozbo():
+    if not prijavljen_uporabnik():
+        raise bottle.HTTPError(401)
+
     return template('dodaj_zalozbo',
                     zalozba="",
                     kraj = "",
@@ -155,6 +164,8 @@ def dodaj_zalozbo():
 
 @post('/dodaj_zalozbo/')
 def dodajanje_zalozbe():
+    if not prijavljen_uporabnik():
+        raise bottle.HTTPError(401)
     try:
         id = modeli.id_zalozbe(request.forms.ime)
     except Exception as ex: 
@@ -164,11 +175,6 @@ def dodajanje_zalozbe():
                             #dolg = request.forms.dolg,
                             napaka=True)
     redirect('/zalozbe/{}/'.format(id)) 
-
-
-run( reloader = True, debug= True)
-
-
 
 #prijavaa
 
@@ -198,7 +204,8 @@ def registracija():
         redirect('/')
     else:
         raise bottle.HTTPError(
-403, "Uporabnik s tem uporabniškim imenom že obstaja!")
+            403, "Uporabnik s tem uporabniškim imenom že obstaja!")
+
 
 
 run( reloader = True, debug= True)

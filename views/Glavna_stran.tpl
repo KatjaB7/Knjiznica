@@ -50,3 +50,32 @@ Na voljo vam je tudi iskanje članov, kjer lahko preverite vaše stanje:
 <a href="dodaj_zalozbo/">Dodaj zalozbo</a>
 </p>
 
+<ul>
+    % if get('prijavljen', False):
+    <li>
+        <a href="dodaj_clana/">Dodaj clana v knjižnico -včlanitev</a>
+    </li>
+     <li>
+        <a href="dodaj_knjigo/">Dodaj knjigo v knjižnico</a>
+    </li>
+     <li>
+        <a href="dodaj_zalozbo/">Dodaj zalozbo</a>
+    </li>
+    <li>
+        <a href="odjava/">Odjavi se</a>
+    </li>
+    % end
+</ul>
+
+% if not get('prijavljen', False):
+<form action="prijava/" method="post">
+<input type="text" name="uporabnisko_ime" value="" />
+<input type="password" name="geslo" value="" />
+<input type="submit" value="Prijavi se">
+</form>
+<form action="registracija/" method="post">
+<input type="text" name="uporabnisko_ime" value="" />
+<input type="password" name="geslo" value="" />
+<input type="submit" value="Registriraj se">
+</form>
+% end
