@@ -46,7 +46,7 @@ def izberi_knjigo():
     niz = input('Vnesite del naslova knjige > ')
     idji_knjig = modeli.poisci_knjige(niz)
     moznosti = [
-        '{}'.format(naslov) for _, naslov, _ in modeli.podatki_knjig(idji_knjig)
+        '{}'.format(naslov) for _, naslov, _, _ in modeli.podatki_knjig(idji_knjig)
     ]
     izbira = izberi_moznost(moznosti)
     return None if izbira is None else idji_knjig[izbira]
@@ -82,7 +82,7 @@ def prikazi_podatke_clana():
         ime, dolg, idji_knjig = modeli.podatki_clana(id_clana)
         naslovi_knjig = [
             naslov
-            for _ , naslov, _
+            for _ , naslov, _, _
             in modeli.podatki_knjig([id_knjige for id_knjige in idji_knjig])
         ]
         print(ime)

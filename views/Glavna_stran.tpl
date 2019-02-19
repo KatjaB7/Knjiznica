@@ -67,15 +67,33 @@ Na voljo vam je tudi iskanje članov, kjer lahko preverite vaše stanje:
     % end
 </ul>
 
+<p>
+</p>
+
 % if not get('prijavljen', False):
 <form action="prijava/" method="post">
+<p>
+Uporabniško ime:
 <input type="text" name="uporabnisko_ime" value="" />
+</p>
+<p>
+Geslo:
 <input type="password" name="geslo" value="" />
 <input type="submit" value="Prijavi se">
+</p>
 </form>
+
 <form action="registracija/" method="post">
+<p>
+Če še niste registrirani se najprej registriraj!
+</p>
+<p>
+Uporabniško ime:
 <input type="text" name="uporabnisko_ime" value="" />
+<p>
+Geslo:
 <input type="password" name="geslo" value="" />
 <input type="submit" value="Registriraj se">
+</p>
 </form>
 % end

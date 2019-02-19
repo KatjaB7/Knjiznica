@@ -187,7 +187,7 @@ def prijava():
             'prijavljen', 'da', secret=SKRIVNOST, path='/')
         redirect('/')
     else:
-        raise bottle.HTTPError(403, "BOOM!")
+        raise bottle.HTTPError(403, "Niste še registrirani zato se najprej registrirajte in nato prijavite!")
 
 @get('/odjava/')
 def odjava():

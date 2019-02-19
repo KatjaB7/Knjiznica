@@ -53,6 +53,13 @@ def ustvari_tabele(conn):
             clan            INTEGER REFERENCES clan(id)
         );
     """)
+    conn.execute("""
+        CREATE TABLE uporabniki (
+            uporabnisko_ime  TEXT PRIMARY KEY,
+            geslo TEXT,
+            sol TEXT
+        );
+    """)
 
 
 def uvozi_knjige(conn):
@@ -158,10 +165,4 @@ def ustvari_bazo_ce_ne_obstaja(conn):
             ustvari_bazo(conn)
 
 
-    conn.execute("""
-        CREATE TABLE uporabniki (
-            uporabnisko_ime  TEXT PRIMARY KEY,
-            geslo TEXT,
-            sol TEXT
-        );
-    """)
+    

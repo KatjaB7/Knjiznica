@@ -69,15 +69,14 @@ def podatki_knjige(id_knjige):
         poizvedba_za_avtorja = """
             SELECT avtor.ime
             FROM avtor
-                 JOIN knjiga ON avtor.id = knjiga.avtor
+            JOIN knjiga ON avtor.id = knjiga.avtor
             WHERE knjiga.id = ?
         """
         avtor = cur.execute(poizvedba_za_avtorja, [id_knjige]).lastrowid
-        #avtor = [vrstica[0] for vrstica in cur.fetchall()]
         poizvedba_za_zalozbo = """
             SELECT zalozba.naziv
             FROM zalozba
-                 JOIN knjiga ON zalozba.id = knjiga.zalozba
+            JOIN knjiga ON zalozba.id = knjiga.zalozba
             WHERE knjiga.id = ?
         """
         zalozba = cur.execute(poizvedba_za_zalozbo, [id_knjige])
@@ -163,7 +162,7 @@ def podatki_avtorjev(idji_avtorjev):
     """.format(', '.join(len(idji_avtorjev) * ['?']))
     return conn.execute(poizvedba, idji_avtorjev).fetchall()
 
-def podatki_avtor(id_avtorja):  #ni kul še
+def podatki_avtor(id_avtorja):  
     """
     Vrne podatke o avtorju z danim IDjem.
     """
@@ -181,6 +180,7 @@ def podatki_avtor(id_avtorja):  #ni kul še
         poizvedba_za_knjige = """
             SELECT knjiga.id
             FROM knjiga
+            WHERE avtor = ?
         """
         idji_knjig = []
         for (id_knjige,) in conn.execute(poizvedba_za_knjige, [id_avtorja]):
@@ -234,7 +234,7 @@ def podatki_clana(id_clan):
     else:
         ime, dolg, = osnovni_podatki
         poizvedba_za_knjige = """
-            SELECT izposoja.id
+            SELECT izposoja.knjiga
             FROM izposoja
             JOIN clan ON izposoja.clan = clan.id
             WHERE clan.id = ?
@@ -257,7 +257,7 @@ def dodaj_clana(ime_clana):
 def dodaj_izposojo(id_clan, id_knjiga): 
     poizvedba = """
         INSERT INTO izposoja
-        (datum_izposoje, rok_vracila, clan, id)
+        (datum_izposoje, rok_vracila, clan, knjiga)
         VALUES (date('now'), date('now', '+21 days'), ?, ?)
     """
     with conn:
@@ -265,11 +265,11 @@ def dodaj_izposojo(id_clan, id_knjiga):
 
 def dodaj_vracilo(id_izposoje): 
     poizvedba = """
-        UPDATE izposoja SET datum_vracila = date('now') WHERE id = ?
+        UPDATE izposoja SET datum_vracila = date('now') WHERE knjiga = ?
     """
     conn.execute(poizvedba, [id_izposoje])
     poizvedba_rok = """
-        SELECT rok_vracila, datum_vracila, clan FROM izposoja WHERE id = ?
+        SELECT rok_vracila, datum_vracila, clan FROM izposoja WHERE knjiga = ?
     """
     rok, datum, clan = conn.execute(poizvedba_rok, [id_izposoje]).fetchone()
     if datum > rok:
