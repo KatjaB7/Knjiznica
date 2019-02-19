@@ -46,7 +46,7 @@ def ustvari_tabele(conn):
     """)
     conn.execute("""
         CREATE TABLE izposoja (
-            id              INTEGER REFERENCES knjiga(id),
+            knjiga          INTEGER REFERENCES knjiga(id),
             datum_izposoje  DATE,
             datum_vracila   DATE,
             rok_vracila     DATE,
@@ -60,7 +60,7 @@ def uvozi_knjige(conn):
     Uvozi podatke o knjigah.
     """
     conn.execute("DELETE FROM knjiga;")
-    with open('podatki/knjiga.csv') as datoteka:
+    with open( 'podatki/knjiga.csv', encoding='Windows-1250') as datoteka:
         podatki = csv.reader(datoteka, delimiter=";")
         next(podatki)
         stolpci = next(podatki)
@@ -76,7 +76,7 @@ def uvozi_avtorje(conn):
     Uvozi podatke o avtorjih.
     """
     conn.execute("DELETE FROM avtor;")
-    with open('podatki/avtor.csv') as datoteka:
+    with open('podatki/avtor.csv', encoding='Windows-1250',) as datoteka:
         podatki = csv.reader(datoteka, delimiter=";")
         next(podatki)
         stolpci = next(podatki)
@@ -92,7 +92,7 @@ def uvozi_zalozbe(conn):
     Uvozi podatke o založbah.
     """
     conn.execute("DELETE FROM zalozba;")
-    with open('podatki/zalozba.csv') as datoteka:
+    with open('podatki/zalozba.csv', encoding='Windows-1250') as datoteka:
         podatki = csv.reader(datoteka, delimiter=";")
         next(podatki)
         stolpci = next(podatki)
@@ -109,7 +109,7 @@ def uvozi_clane(conn):
     Uvozi podatke o članih.
     """
     conn.execute("DELETE FROM clan;")
-    with open('podatki/clan.csv') as datoteka:
+    with open('podatki/clan.csv', encoding='Windows-1250') as datoteka:
         podatki = csv.reader(datoteka, delimiter=";")
         next(podatki)
         stolpci = next(podatki)
@@ -124,7 +124,7 @@ def uvozi_izposoje(conn):
     Uvozi podatke o izposojah knjig.
     """
     conn.execute("DELETE FROM izposoja;")
-    with open('podatki/izposoja.csv') as datoteka:
+    with open('podatki/izposoja.csv', encoding='Windows-1250') as datoteka:
         podatki = csv.reader(datoteka, delimiter=";")
         next(podatki)
         stolpci = next(podatki)
@@ -156,3 +156,12 @@ def ustvari_bazo_ce_ne_obstaja(conn):
         cur = conn.execute("SELECT COUNT(*) FROM sqlite_master")
         if cur.fetchone() == (0, ):
             ustvari_bazo(conn)
+
+
+    conn.execute("""
+        CREATE TABLE uporabniki (
+            uporabnisko_ime  TEXT PRIMARY KEY,
+            geslo TEXT,
+            sol TEXT
+        );
+    """)
