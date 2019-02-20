@@ -13,6 +13,8 @@ Veselo brskanje in branje.
 Knjižnica K&Z.
 </p>
 
+&nbsp
+
 <p>
 Na voljo vam je tudi iskanje knjig po naslovu:
 </p>
@@ -24,73 +26,75 @@ Na voljo vam je tudi iskanje knjig po naslovu:
 
 <p>
 Na voljo vam je tudi iskanje knjig, glede na avtorja:
-</p>
 <form action="iskanje_avtorjev/" method="get">
 <input type="text" name="ime" value="" />
 <input type="submit" value="Išči">
 </form>
-
-<p>
-Na voljo vam je tudi iskanje članov, kjer lahko preverite vaše stanje:
-</p>
-<form action="iskanje_clanov/" method="get">
-<input type="text" name="ime" value="" />
-<input type="submit" value="Išči">
-</form>
-
-<p>
-<a href="dodaj_knjigo/">Dodaj knjigo</a>
 </p>
 
-<p>
-<a href="dodaj_clana/">Dodaj clana</a>
-</p>
+&nbsp
 
 <p>
-<a href="dodaj_zalozbo/">Dodaj zalozbo</a>
+Za pregled vašega stanja se morate prijaviti.
 </p>
+
+&nbsp
 
 <ul>
     % if get('prijavljen', False):
     <li>
-        <a href="dodaj_clana/">Dodaj clana v knjižnico -včlanitev</a>
+        <p>
+        Na voljo vam je iskanje članov, kjer lahko preverite vaše stanje:
+        <form action="iskanje_clanov/" method="get">
+        <input type="text" name="ime" value="" />
+        <input type="submit" value="Išči">
+        </form>
+        </p>
+
+        &nbsp
+
+    </li>
+    <li>
+        <a href="dodaj_clana/">Dodaj clana - skrbnik</a>
     </li>
      <li>
-        <a href="dodaj_knjigo/">Dodaj knjigo v knjižnico</a>
+        <a href="dodaj_knjigo/">Dodaj knjigo - skrbnik</a>
     </li>
      <li>
-        <a href="dodaj_zalozbo/">Dodaj zalozbo</a>
+        <a href="dodaj_zalozbo/">Dodaj zalozbo - skrbnik</a>
     </li>
+    &nbsp
     <li>
         <a href="odjava/">Odjavi se</a>
     </li>
     % end
 </ul>
 
-<p>
-</p>
+&nbsp
 
 % if not get('prijavljen', False):
 <form action="prijava/" method="post">
 <p>
-Uporabniško ime:
-<input type="text" name="uporabnisko_ime" value="" />
+Prijavite se tukaj:
 </p>
 <p>
+Uporabniško ime:
+<input type="text" name="uporabnisko_ime" value="" />
 Geslo:
 <input type="password" name="geslo" value="" />
 <input type="submit" value="Prijavi se">
 </p>
 </form>
-
 <form action="registracija/" method="post">
+
+&nbsp
+
 <p>
 Če še niste registrirani se najprej registriraj!
 </p>
 <p>
 Uporabniško ime:
 <input type="text" name="uporabnisko_ime" value="" />
-<p>
 Geslo:
 <input type="password" name="geslo" value="" />
 <input type="submit" value="Registriraj se">

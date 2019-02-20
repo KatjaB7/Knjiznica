@@ -12,13 +12,15 @@ def prijavljen_uporabnik():
 def url_knjiznice(id):
     return '/knjiznica/{}/'.format(id)
 
+
 @get('/')
 def glavna_stran():
     st_knjig = modeli.stevilo_knjig()
     st_clanov = modeli.stevilo_clanov()
     return template('Glavna_stran',
                     st_knjig = st_knjig,
-                    st_clanov = st_clanov
+                    st_clanov = st_clanov,
+                    prijavljen=prijavljen_uporabnik()
                     )
 
 #dodaj iskanje založbe
@@ -36,6 +38,8 @@ def iskanje_knjig():
 
 @get('/iskanje_clanov/')
 def iskanje_clanov():
+    if not prijavljen_uporabnik():
+        raise bottle.HTTPError(401)
     niz = request.query.ime
     idji_clanov = modeli.poisci_clane(niz)
     clani = [(id,ime, dolg, '/clani/{}/'.format(id)) for (id, ime, dolg) in modeli.podatki_clanov(idji_clanov)]
@@ -49,7 +53,7 @@ def iskanje_clanov():
 def iskanje_avtorjev():
     niz = request.query.ime
     idji_avtorjev = modeli.poisci_avtorje(niz)
-    avtorji = [(id,ime, '/avtorji/{}/'.format(id)) for (id, ime) in modeli.podatki_avtorjev(idji_avtorjev)]
+    avtorji = [(id,ime, '/avtorji/{}/'.format(id)) for (id, ime,) in modeli.podatki_avtorjev(idji_avtorjev)]
     return template(
         'rezultati_iskanja_avtorjev',
         niz=niz,
@@ -59,11 +63,11 @@ def iskanje_avtorjev():
 
 @get('/avtorji/<id_avtorja:int>/')
 def podatki_avtorja(id_avtorja):
-    ime, idji_knjig = modeli.podatki_avtor(id_avtorja)
+    ime, naslovi_knjig = modeli.podatki_avtor(id_avtorja)
     return template(
         'podatki_avtor',
         ime = ime, 
-        idji_knjig = idji_knjig,
+        naslovi_knjig = naslovi_knjig,
         )
 
 
@@ -95,8 +99,8 @@ def podatki_clana(id_clan):
 def dodaj_knjigo():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
-    #zalozba = modeli.seznam_zalozb()
-    #kraj = modeli.seznam_krajev()
+    zalozba = modeli.seznam_zalozb()
+    kraj = modeli.seznam_krajev()
     return template('dodaj_knjigo',
                     naslov="",
                     opis="",
@@ -115,7 +119,7 @@ def dodajanje_knjige():
                                 avtor=request.forms.avtor,
                                 zalozba=request.forms.zalozba,
                                 kraj=request.forms.kraj)
-    except Exception as ex: 
+    except: 
         zalozba = modeli.seznam_zalozb()
         kraj = modeli.seznam_krajev()
         return template('dodaj_knjigo',
@@ -135,7 +139,7 @@ def dodaj_clana():
         raise bottle.HTTPError(401)
     return template('dodaj_clana',
                     ime="",
-                    dolg = "",
+                    #dolg = "",
                     napaka=False)
 
 @post('/dodaj_clana/')
@@ -143,8 +147,8 @@ def dodajanje_clana():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
     try:
-        id = modeli.dodaj_clana(request.forms.ime)
-    except Exception as ex: 
+        id = modeli.dodaj_clana(ime =request.forms.ime)
+    except: 
         return template('dodaj_clana',
                             ime=request.forms.ime,
                             #dolg = request.forms.dolg,
@@ -167,8 +171,9 @@ def dodajanje_zalozbe():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
     try:
-        id = modeli.id_zalozbe(request.forms.ime)
-    except Exception as ex: 
+        id = modeli.id_zalozbe(zalozba=request.forms.zalozba,
+                               kraj = request.forms.kraj)
+    except: #Exception as ex: 
         return template('dodaj_zalozbo',
                             zalozba=request.forms.zalozba,
                             kraj = request.forms.kraj,
@@ -187,7 +192,7 @@ def prijava():
             'prijavljen', 'da', secret=SKRIVNOST, path='/')
         redirect('/')
     else:
-        raise bottle.HTTPError(403, "Niste še registrirani zato se najprej registrirajte in nato prijavite!")
+        raise bottle.HTTPError(403, "Nisi še registriran najprej se ragistriraj")
 
 @get('/odjava/')
 def odjava():
@@ -205,6 +210,10 @@ def registracija():
     else:
         raise bottle.HTTPError(
             403, "Uporabnik s tem uporabniškim imenom že obstaja!")
+
+@get('/static/<filename>')
+def staticna_datoteka(filename):
+    return bottle.static_file(filename, root='static')
 
 
 

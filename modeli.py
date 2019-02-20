@@ -72,14 +72,14 @@ def podatki_knjige(id_knjige):
             JOIN knjiga ON avtor.id = knjiga.avtor
             WHERE knjiga.id = ?
         """
-        avtor = cur.execute(poizvedba_za_avtorja, [id_knjige]).lastrowid
+        avtor, = cur.execute(poizvedba_za_avtorja, [id_knjige]).fetchone()
         poizvedba_za_zalozbo = """
             SELECT zalozba.naziv
             FROM zalozba
             JOIN knjiga ON zalozba.id = knjiga.zalozba
             WHERE knjiga.id = ?
         """
-        zalozba = cur.execute(poizvedba_za_zalozbo, [id_knjige])
+        zalozba, = cur.execute(poizvedba_za_zalozbo, [id_knjige]).fetchone()
         return naslov, opis, avtor, zalozba
 
 
@@ -178,14 +178,14 @@ def podatki_avtor(id_avtorja):
     else:
         ime,  = osnovni_podatki
         poizvedba_za_knjige = """
-            SELECT knjiga.id
+            SELECT knjiga.naslov
             FROM knjiga
-            WHERE avtor = ?
+            WHERE knjiga.avtor = ?
         """
-        idji_knjig = []
-        for (id_knjige,) in conn.execute(poizvedba_za_knjige, [id_avtorja]):
-            idji_knjig.append(id_knjige)
-        return ime, idji_knjig
+        naslovi_knjig = []
+        for (naslov,) in conn.execute(poizvedba_za_knjige, [id_avtorja]):
+            naslovi_knjig.append(naslov)
+        return ime, naslovi_knjig
 
 
 
