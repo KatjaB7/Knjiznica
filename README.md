@@ -8,7 +8,7 @@ Seminarska naloga pri predmetu *Podatkovne baze 1*
 
 ## Opis
 
-Baza bo hranila podatke o knjigah v knjižnici. Njihovem opisu, založbi, avtorju.
+Baza bo hranila podatke o knjigah v knjižnici. Njihovem opisu, založbi, avtorju. Končni izdelek bo spletna storitev, v kateri bo uporabnik lahko:
 
 *	Pogledal podrobne podatke o vsaki knjigi (opis, avtor, založba).
 *	Pogledal podatke o vsakem članu (ime, knjige, dolg).
