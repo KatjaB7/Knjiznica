@@ -79,18 +79,26 @@ def podatki_knjige(id_knjige):
         'podatki_knjige',
         naslov=naslov,
         opis=opis,
-        avtorji=avtor,
-        zalozbe=zalozba,
+        avtor=avtor,
+        zalozba=zalozba,
 )
 
 @get('/clani/<id_clan:int>/')
 def podatki_clana(id_clan):
     ime, dolg, idji_knjig = modeli.podatki_clana(id_clan)
+    if len(idji_knjig) > 0:
+        naslovi = [
+            naslov
+            for _ , naslov, _, _
+            in modeli.podatki_knjig([id_knjige for id_knjige in idji_knjig])
+        ]
+    else:
+        naslovi = "Nobena knjiga ni izposojena."
     return template(
         'podatki_clana',
         ime=ime,
         dolg = dolg,
-        idji_knjig = idji_knjig,    
+        naslov = naslovi,    
 )
 
 #ko dodaš založbo boma nardili seznam da izbereš med unimo ko so ker itak v primeru 
@@ -147,10 +155,10 @@ def dodajanje_clana():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
     try:
-        id = modeli.dodaj_clana(ime =request.forms.ime)
+        id = modeli.dodaj_clana(ime_clana =request.forms.ime)
     except: 
         return template('dodaj_clana',
-                            ime=request.forms.ime,
+                            ime_clana=request.forms.ime,
                             #dolg = request.forms.dolg,
                             napaka=True)
     redirect('/clani/{}/'.format(id)) 
@@ -192,7 +200,7 @@ def prijava():
             'prijavljen', 'da', secret=SKRIVNOST, path='/')
         redirect('/')
     else:
-        raise bottle.HTTPError(403, "Nisi še registriran najprej se ragistriraj")
+        raise bottle.HTTPError(403, "Niste še registrirani, najprej se registrirajte.")
 
 @get('/odjava/')
 def odjava():

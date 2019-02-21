@@ -234,15 +234,15 @@ def podatki_clana(id_clan):
     else:
         ime, dolg, = osnovni_podatki
         poizvedba_za_knjige = """
-            SELECT izposoja.knjiga
+            SELECT knjiga, rok_vracila
             FROM izposoja
             JOIN clan ON izposoja.clan = clan.id
             WHERE clan.id = ?
         """
-        idji_knjig = []
-        for (id_knjige,) in conn.execute(poizvedba_za_knjige, [id_clan]):
-            idji_knjig.append(id_knjige)
-        return ime, dolg, idji_knjig
+        naslovi_knjig = []
+        for (naslov_knjige,) in conn.execute(poizvedba_za_knjige, [id_clan]):
+            naslovi_knjig.append(naslov_knjige)
+        return ime, dolg, naslovi_knjig
 
 def dodaj_clana(ime_clana): 
     poizvedba = """
@@ -300,6 +300,20 @@ def seznam_krajev():
     poizvedba = """
         SELECT id, kraj FROM zalozba
         ORDER BY kraj
+    """
+    return conn.execute(poizvedba).fetchall()
+
+def seznam_clanov():
+    poizvedba = """
+        SELECT id, ime FROM clan
+        ORDER BY ime
+    """
+    return conn.execute(poizvedba).fetchall()
+
+def seznam_knjig():
+    poizvedba = """
+        SELECT id, naslov FROM knjiga
+        ORDER BY naslov
     """
     return conn.execute(poizvedba).fetchall()
 

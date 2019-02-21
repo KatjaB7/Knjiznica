@@ -1,4 +1,4 @@
 % rebase('osnova')
 
-<h1>{{ ime }} <small>({{ ime}})</small></h1>
+<h1>{{ ime }} <small>({{ ime}}) ({{ naslov}})</small></h1>
 
