@@ -46,6 +46,7 @@ def ustvari_tabele(conn):
     """)
     conn.execute("""
         CREATE TABLE izposoja (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
             knjiga          INTEGER REFERENCES knjiga(id),
             datum_izposoje  DATE,
             datum_vracila   DATE,
@@ -136,8 +137,8 @@ def uvozi_izposoje(conn):
         next(podatki)
         stolpci = next(podatki)
         poizvedba = """
-            INSERT INTO izposoja VALUES ({})
-        """.format(', '.join(["?"] * len(stolpci)))
+            INSERT INTO izposoja ({}) VALUES ({})
+        """.format(', '.join(stolpci), ', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
             conn.execute(poizvedba, vrstica)
 

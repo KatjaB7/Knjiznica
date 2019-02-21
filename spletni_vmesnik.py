@@ -58,7 +58,7 @@ def iskanje_avtorjev():
         'rezultati_iskanja_avtorjev',
         niz=niz,
         avtorji=avtorji,
- )
+    )
 
 
 @get('/avtorji/<id_avtorja:int>/')
