@@ -5,7 +5,7 @@
 % end
 
 <form method="post">
-Ime in priimek: <input type="text" name="ime" value="{{ime}}" /><br />
+Ime in priimek: <input type="text" name="ime_clana" value="{{ime_clana}}" /><br />
 
 
 <input type="submit" value="Dodaj clana">

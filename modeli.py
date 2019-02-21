@@ -234,15 +234,15 @@ def podatki_clana(id_clan):
     else:
         ime, dolg, = osnovni_podatki
         poizvedba_za_knjige = """
-            SELECT knjiga, rok_vracila
+            SELECT knjiga
             FROM izposoja
             JOIN clan ON izposoja.clan = clan.id
             WHERE clan.id = ?
         """
-        naslovi_knjig = []
-        for (naslov_knjige,) in conn.execute(poizvedba_za_knjige, [id_clan]):
-            naslovi_knjig.append(naslov_knjige)
-        return ime, dolg, naslovi_knjig
+        idji_knjig = []
+        for (id_knjige,) in conn.execute(poizvedba_za_knjige, [id_clan]):
+            idji_knjig.append(id_knjige)
+        return ime, dolg, idji_knjig
 
 def dodaj_clana(ime_clana): 
     poizvedba = """
@@ -251,7 +251,7 @@ def dodaj_clana(ime_clana):
         VALUES (?, 0)
     """
     with conn:
-        return conn.execute(poizvedba, [id_clana(ime_clana, True)]).lastrowid
+        return conn.execute(poizvedba, [ime_clana]).lastrowid
 
 
 def dodaj_izposojo(id_clan, id_knjiga): 
@@ -261,7 +261,8 @@ def dodaj_izposojo(id_clan, id_knjiga):
         VALUES (date('now'), date('now', '+21 days'), ?, ?)
     """
     with conn:
-        return conn.execute(poizvedba, [id_clan, id_knjiga]).lastrowid
+        conn.execute(poizvedba, [id_clan, id_knjiga]).lastrowid
+        return id_knjiga
 
 def dodaj_vracilo(id_izposoje): 
     poizvedba = """
@@ -288,6 +289,15 @@ def poravnava_dolga(id_clana):
         """
     with conn:
         return conn.execute(poizvedba, [id_clana]).lastrowid
+
+def podatki_izposoje(id_knjiga):
+    poizvedba = """
+        SELECT knjiga, clan, datum_izposoje, datum_vracila, rok_vracila
+        FROM izposoja
+        WHERE knjiga = ?
+        """
+    with conn:
+        return conn.execute(poizvedba, [id_knjiga]).fetchone()
 
 def seznam_zalozb():
     poizvedba = """

@@ -55,6 +55,15 @@ Iskanje knjig, glede na avtorja:
      <li>
         <a href="dodaj_knjigo/">Dodaj knjigo - skrbnik</a>
     </li>
+     <li>
+        <a href="dodaj_izposojo/">Izposoja - skrbnik</a>
+    </li>
+      <li>
+        <a href="dodaj_vracilo/">Vracilo - skrbnik</a>
+    </li>
+      <li>
+        <a href="poravnava_dolga/">Poravnava dolga - skrbnik</a>
+    </li>
     &nbsp
     <li>
         <a href="odjava/">Odjavi se</a>
