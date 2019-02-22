@@ -23,7 +23,6 @@ def glavna_stran():
                     prijavljen=prijavljen_uporabnik()
                     )
 
-#dodaj iskanje založbe
 
 @get('/iskanje_knjig/')
 def iskanje_knjig():
@@ -82,6 +81,19 @@ def podatki_izposoje(id_knjiga):
         rok_vracila = rok_vracila,
 )
 
+@get('/vracilo/')
+def podatki_vracila(id_knjige):
+    return template(
+        'podatki_vracila',
+        
+)
+
+@get('/podatki_dolga/<id_knjiga:int>/')
+def podatki_dolga(id_knjiga):
+    return template(
+        'podatki_dolga',
+    )
+
 
 @get('/knjiznica/<id_knjige:int>/')
 def podatki_knjige(id_knjige):
@@ -112,14 +124,10 @@ def podatki_clana(id_clan):
         naslov = naslovi,    
 )
 
-#ko dodaš založbo boma nardili seznam da izbereš med unimo ko so ker itak v primeru 
-#da je še ni pač najprej dodaš založbo pa pol ne ....
 @get('/dodaj_knjigo/')    
 def dodaj_knjigo():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
-    zalozba = modeli.seznam_zalozb()
-    kraj = modeli.seznam_krajev()
     return template('dodaj_knjigo',
                     naslov="",
                     opis="",
@@ -139,8 +147,6 @@ def dodajanje_knjige():
                                 zalozba=request.forms.zalozba,
                                 kraj=request.forms.kraj)
     except: 
-        zalozba = modeli.seznam_zalozb()
-        kraj = modeli.seznam_krajev()
         return template('dodaj_knjigo',
                             naslov=request.forms.naslov,
                             opis=request.forms.opis,
@@ -170,7 +176,6 @@ def dodajanje_clana():
     except: 
         return template('dodaj_clana',
                             ime_clana=request.forms.ime_clana,
-                            #dolg = request.forms.dolg,
                             napaka=True)
     redirect('/clani/{}/'.format(id)) 
 
@@ -192,27 +197,27 @@ def dodajanje_izposoje():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
     try:
-        id = modeli.dodaj_izposojo(id_clan = request.forms.getall('id_clan'),
-                                   id_knjiga = request.forms.getall('id_knjiga'))
-    except: #Exception as ex: 
+        id = modeli.dodaj_izposojo(id_clan = request.forms.id_clan,
+                                   id_knjiga = request.forms.id_knjiga)
+    except: 
         id_clan = modeli.seznam_clanov()
         id_knjiga= modeli.seznam_knjig()
         return template('dodaj_izposojo',
-                        id_clan = request.forms.getall('id_clan'),
-                        id_knjiga = request.forms.getall('id_knjiga'),
+                        id_clan = request.forms.id_clan,
+                        id_knjiga = request.forms.id_knjiga,
                         vsi_clani = id_clan,
                         vse_knjige = id_knjiga,
                         napaka=True)
     redirect('/izposoja/{}/'.format(id)) 
 
-get('/dodaj_vracilo/')    
+@get('/dodaj_vracilo/')    
 def dodaj_vracilo():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
-    knjige = modeli.seznam_knjig()
+    id_knjige = modeli.seznam_knjig()
     return template('dodaj_vracilo',
-                    id_izposoje = [],
-                    vse_knjige = knjige,
+                    id_knjige = [],
+                    vse_knjige = id_knjige,
                     napaka=False)
 
 @post('/dodaj_vracilo/')
@@ -220,23 +225,23 @@ def dodajanje_vracila():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
     try:
-        modeli.dodaj_vracilo(id_izposoje = request.forms.getall('id_izposoje'))
-    except: #Exception as ex: 
-        knjige = modeli.seznam_knjig()
+        modeli.dodaj_vracilo(id_knjige = request.forms.id_knjige)
+    except:  
+        id_knjige = modeli.seznam_knjig()
         return template('dodaj_vracilo',
-                        id_izposoje = request.forms.getall('id_izposoje'),
-                        vse_knjige = knjige,
+                        id_knjige = request.forms.id_knjige,
+                        vse_knjige = id_knjige,
                         napaka=True)
-    redirect('/zalozbe/{}/'.format(id)) 
+    redirect('/vracilo/') 
 
-get('/poravnava_dolga/')    
+@get('/poravnava_dolga/')    
 def poravnava_dolga():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
-    clani = modeli.seznam_clanov()
-    return template('poravnavo_dolga',
-                    id_clana = request.forms.getall('id_clana'),
-                    vsi_clani = clani,
+    id_clana = modeli.seznam_clanov()
+    return template('poravnava_dolga',
+                    id_clana = request.forms.id_clana,
+                    vsi_clani = id_clana,
                     napaka=False)
 
 @post('/poravnava_dolga/')
@@ -244,17 +249,16 @@ def poravnavanje_dolga():
     if not prijavljen_uporabnik():
         raise bottle.HTTPError(401)
     try:
-        id = modeli.poravnava_dolga(id_clana = request.forms.getall('clan'))
-    except: #Exception as ex: 
-        clani = modeli.seznam_clanov()
+        id = modeli.poravnava_dolga(id_clana = request.forms.id_clana)
+    except:  
+        id_clana = modeli.seznam_clanov()
         return template('poravnava_dolga',
-                        id_clana = request.forms.getall('id_clana'),
-                        vsi_clani = clani,
+                        id_clana = request.forms.id_clana,
+                        vsi_clani = id_clana,
                         napaka=True)
-    redirect('/zalozbe/{}/'.format(id))
+    redirect('/podatki_dolga/{}/'.format(id))
 
 
-#prijavaa
 
 @post('/prijava/')
 def prijava():

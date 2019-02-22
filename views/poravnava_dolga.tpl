@@ -5,7 +5,16 @@
 % end
 
 <form method="post">
-Član: <input type="text" name="id_clana" value="{{id_clana}}" /><br />   
+Član: <select multiple name="id_clana">
+% for id, ime in vsi_clani:
+    <option value="{{id}}" {{'selected' if str(id) in id_clana else ''}}>{{ime}}</option>
+% end
+</select>
+<br />  
 
 <input type="submit" value="Poravnava dolga">
+</form>
+
+<form method="get" action="/">
+    <button class="btn"><i class="fa fa-home"></i></button>
 </form>

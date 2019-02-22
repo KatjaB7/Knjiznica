@@ -264,15 +264,15 @@ def dodaj_izposojo(id_clan, id_knjiga):
         conn.execute(poizvedba, [id_clan, id_knjiga]).lastrowid
         return id_knjiga
 
-def dodaj_vracilo(id_izposoje): 
+def dodaj_vracilo(id_knjige): 
     poizvedba = """
         UPDATE izposoja SET datum_vracila = date('now') WHERE knjiga = ?
     """
-    conn.execute(poizvedba, [id_izposoje])
+    conn.execute(poizvedba, [id_knjige])
     poizvedba_rok = """
         SELECT rok_vracila, datum_vracila, clan FROM izposoja WHERE knjiga = ?
     """
-    rok, datum, clan = conn.execute(poizvedba_rok, [id_izposoje]).fetchone()
+    rok, datum, clan = conn.execute(poizvedba_rok, [id_knjige]).fetchone()
     if datum > rok:
         poizvedba = """
             UPDATE clan SET dolg = dolg + julianday(?) - julianday(?)
@@ -298,6 +298,15 @@ def podatki_izposoje(id_knjiga):
         """
     with conn:
         return conn.execute(poizvedba, [id_knjiga]).fetchone()
+
+def podatki_vracila(id_knjige):
+    poizvedba = """
+        SELECT dolg
+        FROM clan JOIN izposoja ON clan.id = izposoja.clan
+        WHERE izposoja.knjiga = ?
+    """
+    with conn:
+        return conn.execute(poizvedba, [id_knjige]).fetchone()
 
 def seznam_zalozb():
     poizvedba = """
@@ -327,7 +336,6 @@ def seznam_knjig():
     """
     return conn.execute(poizvedba).fetchall()
 
-#registraacijaaa - prijavaa
 
 
 def zakodiraj(geslo, sol=None):

@@ -7,3 +7,8 @@ Iskanje niza '{{ niz }}' je obrodilo naslednje sadove:
     <li><a href="{{ url }}">{{ ime }} ({{ dolg }})</a></li>
 % end
 </ul>
+
+
+<form method="get" action="/">
+    <button class="btn"><i class="fa fa-home"></i></button>
+</form>

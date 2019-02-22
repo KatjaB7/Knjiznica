@@ -8,6 +8,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
+  <body background="/static/knj.png">
   <section class="section">
     <div class="container">
     {{! base }}
@@ -17,6 +18,7 @@
   <footer class="footer">
     <div class="content has-text-centered">
       <p>
+      <img src = "/static/logo.png">
         &copy; 2018 Katja Bela, Zala Kitel
       </p>
     </div>

@@ -4,7 +4,8 @@
 <h1 class="title is-3 is-spaced"">Dobrodošli v knjižnici Katje in Zale </h1>
 <p>
 V najini knjižnici vam je na voljo {{ st_knjig }} knjig z raznoliko tematiko, med katerimi lahko izbirate. 
-Vedno znova posodabljamo vsebine in smo s knjigami 'on track' za vse vrste knjižnih moljev.
+Vedno znova posodabljamo vsebine in smo s knjigami 'on track' <p> za vse vrste knjižnih moljev.
+</p>
 </p>
 <p>
 Vabimo vas, da se včlanite v našo knjižnico, ki ima do sedaj že {{ st_clanov }} članov in postanete del nas. 

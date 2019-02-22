@@ -9,11 +9,10 @@ Iskanje niza '{{ niz }}' je obrodilo naslednje sadove:
 </ul>
 
 
-<!-- Add font awesome icons to buttons  -->
-<button class="btn"><i class="fa fa-home"></i></button>
 
-
-
+<form method="get" action="/">
+    <button class="btn"><i class="fa fa-home"></i></button>
+</form>
 
   
 

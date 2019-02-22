@@ -112,8 +112,8 @@ def dodaj_izposojo():
     print('Knjiga je izposojena.')
 
 def dodaj_vracilo(): 
-    id_izposoje = izberi_knjigo()
-    modeli.dodaj_vracilo(id_izposoje)
+    id_knjige = izberi_knjigo()
+    modeli.dodaj_vracilo(id_knjige)
     print('Knjiga je vrnjena.')
 
 def poravnava_dolga():

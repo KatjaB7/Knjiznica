@@ -23,3 +23,7 @@ Knjiga: <select multiple name="id_knjiga">
 
 <input type="submit" value="Dodaj izposojo">
 </form>
+
+<form method="get" action="/">
+    <button class="btn"><i class="fa fa-home"></i></button>
+</form>

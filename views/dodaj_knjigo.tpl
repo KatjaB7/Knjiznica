@@ -15,3 +15,8 @@ Kraj zalozbe: <input type="text" name="kraj" value="{{kraj}}" /><br />
 <input type="submit" value="Dodaj knjigo">
 
 </form>
+
+
+<form method="get" action="/">
+    <button class="btn"><i class="fa fa-home"></i></button>
+</form>
