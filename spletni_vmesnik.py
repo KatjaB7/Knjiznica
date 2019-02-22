@@ -82,7 +82,7 @@ def podatki_izposoje(id_knjiga):
 )
 
 @get('/vracilo/')
-def podatki_vracila(id_knjige):
+def podatki_vracila():
     return template(
         'podatki_vracila',
         
